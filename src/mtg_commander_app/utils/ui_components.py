@@ -44,10 +44,9 @@ class UIComponents:
         y_botao_abrir = 480
         y_botao_cadastrar = 550
 
-        # --- COMPONENTES ---
+        # --- COMPONENTES DO MENU PRINCIPAL ---
         self.campo_texto_sala = pygame.Rect(cx - 150, y_input_sala, 300, 40)
         
-        # Botões de Jogadores
         largura_btn_jog = 80
         self.rects_jogadores = {
             2: pygame.Rect(cx - 135, y_botoes_jogadores, largura_btn_jog, 40),
@@ -57,6 +56,17 @@ class UIComponents:
         
         self.rect_criar = pygame.Rect(cx - 150, y_botao_abrir, 300, 50)
         self.rect_cadastrar = pygame.Rect(cx - 150, y_botao_cadastrar, 300, 50)
+
+        # --- COMPONENTES DE CADASTRO (CORREÇÃO DO ERRO) ---
+        self.btn_voltar = pygame.Rect(20, 20, 100, 40)
+        self.rect_input_nome_deck = pygame.Rect(cx - 150, 200, 300, 40)
+        # Atributo que faltava para sincronizar o ficheiro TXT
+        self.btn_selecionar_arquivo = pygame.Rect(cx - 150, 300, 300, 50) 
+        self.btn_confirmar_cadastro = pygame.Rect(cx - 150, 450, 300, 50)
+        
+        # --- COMPONENTES DE JOGO (MATCH) ---
+        self.btn_manter_mao = pygame.Rect(cx - 210, altura // 2 + 80, 200, 60)
+        self.btn_fazer_mulligan = pygame.Rect(cx + 10, altura // 2 + 80, 200, 60)
 
     @staticmethod
     def desenhar_caixa_texto(surface, rect, texto, fonte, ativo, placeholder=""):

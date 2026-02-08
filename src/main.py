@@ -2,7 +2,7 @@ import pygame
 from mtg_commander_app.controller.Controller_Deck import DeckController
 from mtg_commander_app.core.storage import MTGStorageManager
 from mtg_commander_app.view.view_manager import ViewManager
-from mtg_commander_app.utils.Ambiente import inicializar_sistema # Importe o script de ambiente
+from mtg_commander_app.utils.setup import inicializar_sistema # Importe o script de ambiente
 
 def main():
     # 1. PASSO ESSENCIAL: Cria as pastas data/decks, data/cards, etc.

@@ -1,7 +1,7 @@
 import pygame
-from mtg_commander_app.utils.base import ViewComponent
-from mtg_commander_app.utils.ui_components import MenuButton, UIComponents
-from mtg_commander_app.utils.style import GameStyle
+from APP.utils.base import ViewComponent
+from APP.utils.ui_components import MenuButton, UIComponents
+from APP.utils.style import GameStyle
 
 class WelcomeView(ViewComponent):
     def __init__(self, screen, controller, storage):

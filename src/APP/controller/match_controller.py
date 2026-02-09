@@ -1,5 +1,5 @@
 import random
-from mtg_commander_app.models.match_model import PlayerModel
+from APP.models.match_model import PlayerModel
 class MatchController:
     def __init__(self, model):
         self.model = model

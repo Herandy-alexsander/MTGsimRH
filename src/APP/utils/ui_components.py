@@ -1,5 +1,5 @@
 import pygame
-from mtg_commander_app.utils.style import GameStyle
+from APP.utils.style import GameStyle
 
 class MenuButton:
     def __init__(self, rect, text, font):

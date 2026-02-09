@@ -11,7 +11,6 @@ def inicializar_sistema():
         "data",
         "data/decks",   
         "data/cards",   
-        "data/assets",
         "data/cache"
     ]
 

@@ -1,0 +1,15 @@
+{
+    "name": "Makeshift Munitions",
+    "type_line": "Enchantment",
+    "mana_cost": "{1}{R}",
+    "cmc": 2.0,
+    "oracle_text": "{1}, Sacrifice an artifact or creature: This enchantment deals 1 damage to any target.",
+    "power": null,
+    "toughness": null,
+    "rarity": "common",
+    "colors": [
+        "R"
+    ],
+    "image_url": "assets\\cards\\Encantamentos\\makeshift_munitions.jpg",
+    "quantity": 1
+}

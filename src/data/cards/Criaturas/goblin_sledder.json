@@ -1,0 +1,15 @@
+{
+    "name": "Goblin Sledder",
+    "type_line": "Creature — Goblin",
+    "mana_cost": "{R}",
+    "cmc": 1.0,
+    "oracle_text": "Sacrifice a Goblin: Target creature gets +1/+1 until end of turn.",
+    "power": "1",
+    "toughness": "1",
+    "rarity": "common",
+    "colors": [
+        "R"
+    ],
+    "image_url": "assets\\cards\\Criaturas\\goblin_sledder.jpg",
+    "quantity": 1
+}

@@ -1,0 +1,15 @@
+{
+    "name": "Lightning Strike",
+    "type_line": "Instant",
+    "mana_cost": "{1}{R}",
+    "cmc": 2.0,
+    "oracle_text": "Lightning Strike deals 3 damage to any target.",
+    "power": null,
+    "toughness": null,
+    "rarity": "common",
+    "colors": [
+        "R"
+    ],
+    "image_url": "assets\\cards\\Instantes\\lightning_strike.jpg",
+    "quantity": 1
+}

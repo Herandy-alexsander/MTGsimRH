@@ -1,0 +1,15 @@
+{
+    "name": "Battle Hymn",
+    "type_line": "Instant",
+    "mana_cost": "{1}{R}",
+    "cmc": 2.0,
+    "oracle_text": "Add {R} for each creature you control.",
+    "power": null,
+    "toughness": null,
+    "rarity": "common",
+    "colors": [
+        "R"
+    ],
+    "image_url": "assets\\cards\\Instantes\\battle_hymn.jpg",
+    "quantity": 1
+}

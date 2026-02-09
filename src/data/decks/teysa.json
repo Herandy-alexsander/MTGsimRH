@@ -1,9 +1,9 @@
 {
     "name": "teysa",
     "commander": "Teysa Karlov",
-    "deck_id": "",
+    "deck_id": "1",
     "total_cards": 74,
-    "last_updated": "2026-02-08 23:46:00",
+    "last_updated": "2026-02-09 17:04:14",
     "categories": {
         "Terrenos": [
             {

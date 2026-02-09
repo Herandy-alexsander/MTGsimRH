@@ -2,7 +2,7 @@ import pygame
 from APP.view.view_menu import MainMenu
 from APP.view.view_register_progress import RegisterProgressView 
 from APP.view.view_deck_management import RegisterDeckView
-from APP.view.view_deck_list import DeckListView  # <--- TELA DE LISTA
+from APP.view.view_deck_list import DeckListView 
 from APP.view.view_match import MatchView
 from APP.view.view_welcome import WelcomeView
 from APP.controller.match_controller import MatchController
@@ -14,8 +14,8 @@ class ViewManager:
         Gerencia a transição entre telas e o ciclo de vida do simulador.
         """
         self.screen = screen
-        self.controller = controller  # DeckController principal
-        self.storage = storage        # MTGStorageManager
+        self.controller = controller  # DeckController (Gerencia coleção)
+        self.storage = storage        # MTGStorageManager (Gerencia arquivos)
         self.clock = pygame.time.Clock()
         self.running = True
         
@@ -32,7 +32,7 @@ class ViewManager:
             "JOGO": MatchView(self.screen, self.match_controller) 
         }
         
-        # --- LÓGICA DE INICIALIZAÇÃO DE PERFIL ---
+        # Verifica se já existe perfil para decidir a tela inicial
         if not self.storage.verificar_perfil_existente():
             self.state = "WELCOME"
         else:
@@ -59,13 +59,15 @@ class ViewManager:
                 action = current_view.handle_event(events, has_deck=self.controller.has_deck())
                 
                 if action == "ABRIR SALA":
-                    # Configura número de jogadores para a partida
+                    # 1. Configura número de jogadores selecionado no Menu
                     self.match_controller.total_players = current_view.total_jogadores
-                    # Vai para a lista escolher o deck
+                    # 2. Ativa o modo de seleção na galeria para liberar o botão JOGAR
+                    self.views["LISTA_DECKS"].modo_selecao = True
                     self._ir_para_lista_decks()
                 
                 elif action == "MEUS DECKS":
-                    # Apenas visualiza a lista (sem configurar partida)
+                    # 1. Desativa modo seleção: apenas observação segura
+                    self.views["LISTA_DECKS"].modo_selecao = False
                     self._ir_para_lista_decks()
 
                 elif action == "CADASTRAR":
@@ -78,16 +80,22 @@ class ViewManager:
             else:
                 res = current_view.handle_events(events)
 
-                # Tratamento para Cadastro de Deck (Dicionário de dados)
-                if isinstance(res, dict) and res.get("acao") == "INICIAR_PROCESSO":
+                # Tratamento para início da partida configurada
+                if self.state == "LISTA_DECKS" and res == "JOGO":
+                    self._iniciar_partida_configurada()
+
+                # Tratamento para Cadastro de Deck
+                elif isinstance(res, dict) and res.get("acao") == "INICIAR_PROCESSO":
                     self.iniciar_cadastro_com_progresso(res)
                 
                 # Tratamento para Navegação Simples (Strings)
                 elif isinstance(res, str):
                     self.state = res
                     
-                    # Se voltar ao menu, recarrega dados globais
-                    if res == "MENU":
+                    if res == "LISTA_DECKS":
+                        self._ir_para_lista_decks()
+                    
+                    elif res == "MENU":
                         self.controller.reload_data()
                         if hasattr(self.views["MENU"], "atualizar_nickname"):
                             self.views["MENU"].atualizar_nickname()
@@ -96,16 +104,34 @@ class ViewManager:
             self.clock.tick(60)
 
     def _ir_para_lista_decks(self):
-        """Método auxiliar para carregar a lista e mudar de tela."""
-        # Garante que a lista mostre os decks mais recentes
-        if hasattr(self.views["LISTA_DECKS"], '_carregar_lista_decks'):
-            self.views["LISTA_DECKS"].decks = self.views["LISTA_DECKS"]._carregar_lista_decks()
+        """Recarrega a lista do disco e muda de tela."""
+        if hasattr(self.views["LISTA_DECKS"], 'recarregar_lista'):
+            self.views["LISTA_DECKS"].recarregar_lista()
+        
         self.state = "LISTA_DECKS"
 
+    def _iniciar_partida_configurada(self):
+        """
+        Coleta dados finais e injeta no MatchController para iniciar o jogo.
+        """
+        # 1. Pega as cartas do deck que o DeckController carregou da galeria
+        deck_cartas = self.controller.model.cards
+        
+        # 2. Pega o NOME DO COMANDANTE que foi carregado no DeckController
+        # Isso corrige o erro AttributeError na MatchView
+        commander_name = self.controller.model.commander 
+        
+        # 3. Pega o apelido do jogador para o HUD
+        nickname = self.storage.carregar_perfil()["player_info"].get("nickname", "Conjurador")
+        
+        # 4. Inicializa o controlador da partida PASSANDO O COMANDANTE
+        self.match_controller.setup_game(deck_cartas, commander_name, nickname)
+        
+        # 5. Muda para a tela de partida real
+        self.state = "JOGO"
+
     def iniciar_cadastro_com_progresso(self, dados_deck):
-        """
-        Instancia a tela de progresso e inicia o download real (Fase 2).
-        """
+        """Instancia a tela de progresso e inicia o download."""
         nome = dados_deck["nome"]
         path = dados_deck["path"]
         commander = dados_deck.get("commander", "")
@@ -114,13 +140,12 @@ class ViewManager:
         self.state = "PROGRESSO"
         self.views["PROGRESSO"] = progress_view
         
-        # Define o comandante no modelo antes de iniciar o download das imagens
         self.controller.model.commander = commander
         progress_view.iniciar_fluxo(self.controller.model)
 
     def draw(self):
         """Renderiza a interface gráfica da tela ativa."""
-        self.screen.fill((15, 15, 18)) # Fundo
+        self.screen.fill((15, 15, 18))
 
         if self.state == "MENU":
             self.views["MENU"].draw(has_deck=self.controller.has_deck())

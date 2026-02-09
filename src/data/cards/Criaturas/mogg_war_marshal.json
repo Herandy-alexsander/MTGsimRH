@@ -1,0 +1,15 @@
+{
+    "name": "Mogg War Marshal",
+    "type_line": "Creature — Goblin Warrior",
+    "mana_cost": "{1}{R}",
+    "cmc": 2.0,
+    "oracle_text": "Echo {1}{R} (At the beginning of your upkeep, if this came under your control since the beginning of your last upkeep, sacrifice it unless you pay its echo cost.)\nWhen this creature enters or dies, create a 1/1 red Goblin creature token.",
+    "power": "1",
+    "toughness": "1",
+    "rarity": "common",
+    "colors": [
+        "R"
+    ],
+    "image_url": "assets\\cards\\Criaturas\\mogg_war_marshal.jpg",
+    "quantity": 1
+}

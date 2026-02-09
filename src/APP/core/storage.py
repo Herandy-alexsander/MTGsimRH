@@ -23,7 +23,37 @@ class MTGStorageManager:
         os.makedirs(self.cards_repository, exist_ok=True)
         os.makedirs(self.assets_cards_path, exist_ok=True)
 
-    # --- LÓGICA DE SEGURANÇA EM DUAS ETAPAS ---
+    # --- LÓGICA DE SEGURANÇA E VALIDAÇÃO ---
+
+    def validar_deck_recem_criado(self, nome_deck):
+        """
+        Tenta ler o arquivo JSON gerado para garantir integridade.
+        Retorna (True, "Msg") se ok, ou (False, "Erro") se falhar.
+        """
+        # Recria o nome do arquivo usando a mesma lógica do salvamento
+        nome_arquivo = nome_deck.strip().replace(" ", "_").lower() + ".json"
+        caminho = os.path.join(self.decks_path, nome_arquivo)
+        
+        if not os.path.exists(caminho):
+            return False, f"Arquivo {nome_arquivo} não encontrado!"
+            
+        try:
+            with open(caminho, 'r', encoding='utf-8') as f:
+                dados = json.load(f)
+            
+            # Verificação básica de campos obrigatórios
+            if "cards" not in dados and "categories" not in dados:
+                return False, "JSON sem cartas ou categorias!"
+            
+            # Verificação do ID (não pode estar vazio)
+            if not dados.get("deck_id"):
+                 return False, "ID do deck não foi gravado corretamente!"
+
+            return True, "Dados verificados com sucesso."
+        except json.JSONDecodeError:
+            return False, "JSON corrompido (Erro de Sintaxe)."
+        except Exception as e:
+            return False, f"Erro de leitura: {str(e)}"
 
     def analisar_txt(self, caminho_txt):
         """
@@ -47,22 +77,18 @@ class MTGStorageManager:
         cards_extraidos = []
 
         for i, linha in enumerate(lista_nomes):
-            # Limpeza do nome (remove quantidades como '1x ' ou '1 ')
             parts = linha.split(' ', 1)
             qty = int(parts[0]) if parts[0].isdigit() else 1
             name = parts[1] if parts[0].isdigit() else linha
             
-            # Notifica a tela de progresso para atualizar a barra e o texto
             if callback_progresso:
                 callback_progresso(i + 1, total, name)
 
             try:
-                # Consulta rápida à API
                 response = requests.get(f"{self.api_url}{name}", timeout=10)
                 if response.status_code == 200:
                     data = response.json()
                     
-                    # Tratamento de imagem (Frente/Verso)
                     img = data.get("image_uris", {}).get("normal")
                     if not img and "card_faces" in data:
                         img = data["card_faces"][0].get("image_uris", {}).get("normal")
@@ -80,8 +106,7 @@ class MTGStorageManager:
                         "image_url": img,
                         "quantity": qty
                     })
-                    # Delay cortês para não ser bloqueado pela Scryfall
-                    time.sleep(0.08) 
+                    time.sleep(0.08) # Delay cortês
             except Exception as e:
                 print(f"[ERRO] Falha ao processar {name}: {e}")
                 
@@ -119,11 +144,13 @@ class MTGStorageManager:
         return caminho_local
 
     def _salvar_arquivos_deck(self, deck_model):
-        """Gera o arquivo de deck e salva cartas individualmente."""
+        """
+        Salva o JSON do deck com o nome do arquivo sendo o nome do deck.
+        """
         deck_config = {
             "name": deck_model.name,
             "commander": deck_model.commander,
-            "deck_id": deck_model.deck_id,
+            "deck_id": deck_model.deck_id, # ID numérico salvo dentro do JSON
             "total_cards": len(deck_model.cards),
             "last_updated": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "categories": {}
@@ -133,7 +160,6 @@ class MTGStorageManager:
             categoria = self._get_categoria(card.get("type_line", ""))
             nome_base = card.get("name").replace(" ", "_").lower().replace("/", "")
             
-            # Converte imagem remota para local
             caminho_img = self._baixar_imagem_local(card.get("image_url"), categoria, nome_base)
             card["image_url"] = caminho_img
 
@@ -153,7 +179,9 @@ class MTGStorageManager:
                 "data_path": card_json_path
             })
 
-        self._salvar_json(os.path.join(self.decks_path, f"{deck_model.deck_id}.json"), deck_config)
+        # CRIA O NOME DO ARQUIVO: nome_do_deck.json
+        nome_arquivo = deck_model.name.strip().replace(" ", "_").lower()
+        self._salvar_json(os.path.join(self.decks_path, f"{nome_arquivo}.json"), deck_config)
 
     # --- LÓGICA DE PERFIL (PROFILER) ---
 
@@ -167,11 +195,9 @@ class MTGStorageManager:
         return {"player_info": {"nickname": ""}, "decks_info": {"decks": []}}
 
     def verificar_perfil_existente(self):
-        """Retorna True se o usuário já tiver um nickname."""
         return bool(self.carregar_perfil().get("player_info", {}).get("nickname"))
 
     def inicializar_perfil_usuario(self, nickname):
-        """Cria o perfil inicial do conjurador."""
         perfil = self.carregar_perfil()
         perfil["player_info"] = {
             "nickname": nickname,
@@ -183,21 +209,40 @@ class MTGStorageManager:
     def salvar_deck_inteligente(self, deck_model):
         """Verifica se o deck já existe para atualizar ou criar novo."""
         perfil = self.carregar_perfil()
-        existe = any(d['name'].lower() == deck_model.name.lower() for d in perfil.get('decks_info', {}).get('decks', []))
-        if existe:
+        
+        # Procura se o deck já existe pelo nome
+        deck_existente = next((d for d in perfil.get('decks_info', {}).get('decks', []) if d['name'].lower() == deck_model.name.lower()), None)
+        
+        if deck_existente:
+            # Se existe, mantém o ID original
+            deck_model.deck_id = str(deck_existente['id'])
             self._salvar_arquivos_deck(deck_model)
         else:
+            # Se não, registra um novo ID
             self.registrar_novo_deck(deck_model)
 
     def registrar_novo_deck(self, deck_model):
-        """Adiciona o deck ao profiler e salva os arquivos."""
+        """
+        Gera o ID corretamente antes de salvar.
+        """
         perfil = self.carregar_perfil()
+        
+        # 1. Gera ID sequencial
         novo_id = len(perfil['decks_info']['decks']) + 1
+        
+        # 2. Atribui ao modelo para que o JSON do deck tenha o ID preenchido
+        deck_model.deck_id = str(novo_id)
+        
+        # 3. Atualiza o profiler
         perfil['decks_info']['decks'].append({
-            "id": novo_id, "name": deck_model.name, 
-            "commander": deck_model.commander, "created_at": str(date.today())
+            "id": novo_id, 
+            "name": deck_model.name, 
+            "commander": deck_model.commander, 
+            "created_at": str(date.today())
         })
         self._salvar_json(self.profiler_path, perfil)
+        
+        # 4. Salva o arquivo físico (agora com o ID correto e nome de arquivo legível)
         self._salvar_arquivos_deck(deck_model)
 
     def _salvar_json(self, caminho, dados):
@@ -207,3 +252,35 @@ class MTGStorageManager:
                 json.dump(dados, f, indent=4, ensure_ascii=False)
         except Exception as e:
             print(f"[ERRO] Falha ao salvar JSON em {caminho}: {e}")
+    def carregar_deck_para_jogo(self, deck_id):
+        """
+        Carrega os dados completos do deck selecionado para o modelo.
+        """
+        perfil = self.storage.carregar_perfil()
+        # Busca o deck no perfil para obter o nome real
+        deck_info = next((d for d in perfil['decks_info']['decks'] if str(d['id']) == str(deck_id)), None)
+        
+        if deck_info:
+            nome_arquivo = deck_info['name'].strip().replace(" ", "_").lower() + ".json"
+            caminho = os.path.join(self.storage.decks_path, nome_arquivo)
+            
+            if os.path.exists(caminho):
+                try:
+                    with open(caminho, 'r', encoding='utf-8') as f:
+                        dados_deck = json.load(f)
+                    
+                    # Extrai todas as cartas de todas as categorias para uma lista única
+                    lista_completa = []
+                    for categoria in dados_deck.get('categories', {}).values():
+                        for card in categoria:
+                            # Adiciona a carta n vezes conforme a quantidade
+                            for _ in range(card.get('quantity', 1)):
+                                lista_completa.append(card)
+                    
+                    # Alimenta o modelo para que o ViewManager possa ler depois
+                    self.model.cards = lista_completa
+                    print(f"[OK] Deck '{deck_info['name']}' carregado com {len(lista_completa)} cartas.")
+                    return True
+                except Exception as e:
+                    print(f"[ERRO] Falha ao ler arquivo do deck: {e}")
+        return False

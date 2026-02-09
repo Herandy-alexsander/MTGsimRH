@@ -1,0 +1,15 @@
+{
+    "name": "Dragon Fodder",
+    "type_line": "Sorcery",
+    "mana_cost": "{1}{R}",
+    "cmc": 2.0,
+    "oracle_text": "Create two 1/1 red Goblin creature tokens.",
+    "power": null,
+    "toughness": null,
+    "rarity": "common",
+    "colors": [
+        "R"
+    ],
+    "image_url": "assets\\cards\\Feiticos\\dragon_fodder.jpg",
+    "quantity": 1
+}

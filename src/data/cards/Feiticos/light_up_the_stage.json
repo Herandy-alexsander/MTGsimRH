@@ -1,0 +1,15 @@
+{
+    "name": "Light Up the Stage",
+    "type_line": "Sorcery",
+    "mana_cost": "{2}{R}",
+    "cmc": 3.0,
+    "oracle_text": "Spectacle {R} (You may cast this spell for its spectacle cost rather than its mana cost if an opponent lost life this turn.)\nExile the top two cards of your library. Until the end of your next turn, you may play those cards.",
+    "power": null,
+    "toughness": null,
+    "rarity": "uncommon",
+    "colors": [
+        "R"
+    ],
+    "image_url": "assets\\cards\\Feiticos\\light_up_the_stage.jpg",
+    "quantity": 1
+}

@@ -1,0 +1,15 @@
+{
+    "name": "Boggart Brute",
+    "type_line": "Creature — Goblin Warrior",
+    "mana_cost": "{2}{R}",
+    "cmc": 3.0,
+    "oracle_text": "Menace (This creature can't be blocked except by two or more creatures.)",
+    "power": "3",
+    "toughness": "2",
+    "rarity": "common",
+    "colors": [
+        "R"
+    ],
+    "image_url": "assets\\cards\\Criaturas\\boggart_brute.jpg",
+    "quantity": 1
+}

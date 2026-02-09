@@ -1,0 +1,15 @@
+{
+    "name": "Zuko's Offense",
+    "type_line": "Sorcery",
+    "mana_cost": "{R}",
+    "cmc": 1.0,
+    "oracle_text": "Zuko's Offense deals 2 damage to any target.",
+    "power": null,
+    "toughness": null,
+    "rarity": "common",
+    "colors": [
+        "R"
+    ],
+    "image_url": "assets\\cards\\Feiticos\\zuko's_offense.jpg",
+    "quantity": 1
+}

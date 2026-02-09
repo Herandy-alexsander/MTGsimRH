@@ -1,0 +1,15 @@
+{
+    "name": "Krenko's Enforcer",
+    "type_line": "Creature — Goblin Warrior",
+    "mana_cost": "{1}{R}{R}",
+    "cmc": 3.0,
+    "oracle_text": "Intimidate (This creature can't be blocked except by artifact creatures and/or creatures that share a color with it.)",
+    "power": "2",
+    "toughness": "2",
+    "rarity": "common",
+    "colors": [
+        "R"
+    ],
+    "image_url": "assets\\cards\\Criaturas\\krenko's_enforcer.jpg",
+    "quantity": 1
+}

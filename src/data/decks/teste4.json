@@ -1,0 +1,341 @@
+{
+    "name": "teste4",
+    "commander": "Krenko, Mob Boss",
+    "deck_id": "2",
+    "total_cards": 64,
+    "last_updated": "2026-02-09 17:06:19",
+    "categories": {
+        "Terrenos": [
+            {
+                "name": "Mountain",
+                "quantity": 37,
+                "data_path": "data\\cards\\Terrenos\\mountain.json"
+            }
+        ],
+        "Instantes": [
+            {
+                "name": "Shock",
+                "quantity": 1,
+                "data_path": "data\\cards\\Instantes\\shock.json"
+            },
+            {
+                "name": "Abrade",
+                "quantity": 1,
+                "data_path": "data\\cards\\Instantes\\abrade.json"
+            },
+            {
+                "name": "Sure Strike",
+                "quantity": 1,
+                "data_path": "data\\cards\\Instantes\\sure_strike.json"
+            },
+            {
+                "name": "Lightning Strike",
+                "quantity": 1,
+                "data_path": "data\\cards\\Instantes\\lightning_strike.json"
+            },
+            {
+                "name": "Battle Hymn",
+                "quantity": 1,
+                "data_path": "data\\cards\\Instantes\\battle_hymn.json"
+            },
+            {
+                "name": "Open the Omenpaths",
+                "quantity": 1,
+                "data_path": "data\\cards\\Instantes\\open_the_omenpaths.json"
+            },
+            {
+                "name": "Massive Raid",
+                "quantity": 1,
+                "data_path": "data\\cards\\Instantes\\massive_raid.json"
+            },
+            {
+                "name": "Burn Bright",
+                "quantity": 1,
+                "data_path": "data\\cards\\Instantes\\burn_bright.json"
+            },
+            {
+                "name": "Goblin Wizardry",
+                "quantity": 1,
+                "data_path": "data\\cards\\Instantes\\goblin_wizardry.json"
+            },
+            {
+                "name": "Magmatic Sinkhole",
+                "quantity": 1,
+                "data_path": "data\\cards\\Instantes\\magmatic_sinkhole.json"
+            }
+        ],
+        "Criaturas": [
+            {
+                "name": "Goblin Cohort",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\goblin_cohort.json"
+            },
+            {
+                "name": "Tin Street Dodger",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\tin_street_dodger.json"
+            },
+            {
+                "name": "Goblin Sledder",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\goblin_sledder.json"
+            },
+            {
+                "name": "War-Torch Goblin",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\war-torch_goblin.json"
+            },
+            {
+                "name": "Foundry Street Denizen",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\foundry_street_denizen.json"
+            },
+            {
+                "name": "Fanatical Firebrand",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\fanatical_firebrand.json"
+            },
+            {
+                "name": "Skirk Prospector",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\skirk_prospector.json"
+            },
+            {
+                "name": "Lavastep Raider",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\lavastep_raider.json"
+            },
+            {
+                "name": "Subterranean Scout",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\subterranean_scout.json"
+            },
+            {
+                "name": "Goblin Diplomats",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\goblin_diplomats.json"
+            },
+            {
+                "name": "Courageous Goblin",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\courageous_goblin.json"
+            },
+            {
+                "name": "Mogg War Marshal",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\mogg_war_marshal.json"
+            },
+            {
+                "name": "Zookeeper Mechan",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\zookeeper_mechan.json"
+            },
+            {
+                "name": "Warren Torchmaster",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\warren_torchmaster.json"
+            },
+            {
+                "name": "Mogg Flunkies",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\mogg_flunkies.json"
+            },
+            {
+                "name": "Riot Piker",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\riot_piker.json"
+            },
+            {
+                "name": "Goblin Fireleaper",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\goblin_fireleaper.json"
+            },
+            {
+                "name": "Goblin Picker",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\goblin_picker.json"
+            },
+            {
+                "name": "Goblin Boarders",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\goblin_boarders.json"
+            },
+            {
+                "name": "Goblin Roughrider",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\goblin_roughrider.json"
+            },
+            {
+                "name": "Legion Warboss",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\legion_warboss.json"
+            },
+            {
+                "name": "Krenko's Enforcer",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\krenko's_enforcer.json"
+            },
+            {
+                "name": "Rummaging Goblin",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\rummaging_goblin.json"
+            },
+            {
+                "name": "Gut, True Soul Zealot",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\gut,_true_soul_zealot.json"
+            },
+            {
+                "name": "Goblin Matron",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\goblin_matron.json"
+            },
+            {
+                "name": "Boggart Brute",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\boggart_brute.json"
+            },
+            {
+                "name": "Boneclub Berserker",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\boneclub_berserker.json"
+            },
+            {
+                "name": "Beetleback Chief",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\beetleback_chief.json"
+            },
+            {
+                "name": "Goblin Fire Fiend",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\goblin_fire_fiend.json"
+            },
+            {
+                "name": "Krenko, Mob Boss",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\krenko,_mob_boss.json"
+            },
+            {
+                "name": "Volley Veteran",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\volley_veteran.json"
+            }
+        ],
+        "Feiticos": [
+            {
+                "name": "Crash Through",
+                "quantity": 1,
+                "data_path": "data\\cards\\Feiticos\\crash_through.json"
+            },
+            {
+                "name": "Zuko's Offense",
+                "quantity": 1,
+                "data_path": "data\\cards\\Feiticos\\zuko's_offense.json"
+            },
+            {
+                "name": "Faithless Looting",
+                "quantity": 1,
+                "data_path": "data\\cards\\Feiticos\\faithless_looting.json"
+            },
+            {
+                "name": "Trial of Agony",
+                "quantity": 1,
+                "data_path": "data\\cards\\Feiticos\\trial_of_agony.json"
+            },
+            {
+                "name": "Krenko's Command",
+                "quantity": 1,
+                "data_path": "data\\cards\\Feiticos\\krenko's_command.json"
+            },
+            {
+                "name": "Dragon Fodder",
+                "quantity": 1,
+                "data_path": "data\\cards\\Feiticos\\dragon_fodder.json"
+            },
+            {
+                "name": "Mizzium Mortars",
+                "quantity": 1,
+                "data_path": "data\\cards\\Feiticos\\mizzium_mortars.json"
+            },
+            {
+                "name": "Obliterating Bolt",
+                "quantity": 1,
+                "data_path": "data\\cards\\Feiticos\\obliterating_bolt.json"
+            },
+            {
+                "name": "Explosive Shot",
+                "quantity": 1,
+                "data_path": "data\\cards\\Feiticos\\explosive_shot.json"
+            },
+            {
+                "name": "Hordeling Outburst",
+                "quantity": 1,
+                "data_path": "data\\cards\\Feiticos\\hordeling_outburst.json"
+            },
+            {
+                "name": "Light Up the Stage",
+                "quantity": 1,
+                "data_path": "data\\cards\\Feiticos\\light_up_the_stage.json"
+            },
+            {
+                "name": "Hijack",
+                "quantity": 1,
+                "data_path": "data\\cards\\Feiticos\\hijack.json"
+            },
+            {
+                "name": "Goblin War Party",
+                "quantity": 1,
+                "data_path": "data\\cards\\Feiticos\\goblin_war_party.json"
+            },
+            {
+                "name": "Goblin Rally",
+                "quantity": 1,
+                "data_path": "data\\cards\\Feiticos\\goblin_rally.json"
+            }
+        ],
+        "Encantamentos": [
+            {
+                "name": "Makeshift Munitions",
+                "quantity": 1,
+                "data_path": "data\\cards\\Encantamentos\\makeshift_munitions.json"
+            },
+            {
+                "name": "Cavalcade of Calamity",
+                "quantity": 1,
+                "data_path": "data\\cards\\Encantamentos\\cavalcade_of_calamity.json"
+            },
+            {
+                "name": "Impact Tremors",
+                "quantity": 1,
+                "data_path": "data\\cards\\Encantamentos\\impact_tremors.json"
+            },
+            {
+                "name": "Shared Animosity",
+                "quantity": 1,
+                "data_path": "data\\cards\\Encantamentos\\shared_animosity.json"
+            },
+            {
+                "name": "Raid Bombardment",
+                "quantity": 1,
+                "data_path": "data\\cards\\Encantamentos\\raid_bombardment.json"
+            },
+            {
+                "name": "Fire Nation's Conquest",
+                "quantity": 1,
+                "data_path": "data\\cards\\Encantamentos\\fire_nation's_conquest.json"
+            },
+            {
+                "name": "Boggart Shenanigans",
+                "quantity": 1,
+                "data_path": "data\\cards\\Encantamentos\\boggart_shenanigans.json"
+            }
+        ],
+        "Artefatos": [
+            {
+                "name": "Mirrormind Crown",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\mirrormind_crown.json"
+            }
+        ]
+    }
+}

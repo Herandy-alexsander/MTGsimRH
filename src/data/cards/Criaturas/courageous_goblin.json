@@ -1,0 +1,15 @@
+{
+    "name": "Courageous Goblin",
+    "type_line": "Creature — Goblin",
+    "mana_cost": "{1}{R}",
+    "cmc": 2.0,
+    "oracle_text": "Whenever this creature attacks while you control a creature with power 4 or greater, this creature gets +1/+0 and gains menace until end of turn. (It can't be blocked except by two or more creatures.)",
+    "power": "2",
+    "toughness": "2",
+    "rarity": "common",
+    "colors": [
+        "R"
+    ],
+    "image_url": "assets\\cards\\Criaturas\\courageous_goblin.jpg",
+    "quantity": 1
+}

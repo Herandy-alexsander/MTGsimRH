@@ -1,0 +1,15 @@
+{
+    "name": "Open the Omenpaths",
+    "type_line": "Instant",
+    "mana_cost": "{2}{R}",
+    "cmc": 3.0,
+    "oracle_text": "Choose one —\n• Add two mana of any one color and two mana of any other color. Spend this mana only to cast creature or enchantment spells.\n• Creatures you control get +1/+0 until end of turn.",
+    "power": null,
+    "toughness": null,
+    "rarity": "common",
+    "colors": [
+        "R"
+    ],
+    "image_url": "assets\\cards\\Instantes\\open_the_omenpaths.jpg",
+    "quantity": 1
+}

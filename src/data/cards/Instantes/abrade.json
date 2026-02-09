@@ -1,0 +1,15 @@
+{
+    "name": "Abrade",
+    "type_line": "Instant",
+    "mana_cost": "{1}{R}",
+    "cmc": 2.0,
+    "oracle_text": "Choose one —\n• Abrade deals 3 damage to target creature.\n• Destroy target artifact.",
+    "power": null,
+    "toughness": null,
+    "rarity": "uncommon",
+    "colors": [
+        "R"
+    ],
+    "image_url": "assets\\cards\\Instantes\\abrade.jpg",
+    "quantity": 1
+}

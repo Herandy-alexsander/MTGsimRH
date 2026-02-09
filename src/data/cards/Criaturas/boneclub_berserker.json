@@ -1,0 +1,15 @@
+{
+    "name": "Boneclub Berserker",
+    "type_line": "Creature — Goblin Berserker",
+    "mana_cost": "{3}{R}",
+    "cmc": 4.0,
+    "oracle_text": "This creature gets +2/+0 for each other Goblin you control.",
+    "power": "2",
+    "toughness": "4",
+    "rarity": "common",
+    "colors": [
+        "R"
+    ],
+    "image_url": "assets\\cards\\Criaturas\\boneclub_berserker.jpg",
+    "quantity": 1
+}

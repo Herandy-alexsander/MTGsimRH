@@ -1,0 +1,15 @@
+{
+    "name": "Goblin Wizardry",
+    "type_line": "Instant",
+    "mana_cost": "{3}{R}",
+    "cmc": 4.0,
+    "oracle_text": "Create two 1/1 red Goblin Wizard creature tokens with prowess. (Whenever you cast a noncreature spell, they get +1/+1 until end of turn.)",
+    "power": null,
+    "toughness": null,
+    "rarity": "common",
+    "colors": [
+        "R"
+    ],
+    "image_url": "assets\\cards\\Instantes\\goblin_wizardry.jpg",
+    "quantity": 1
+}

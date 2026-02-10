@@ -4,62 +4,33 @@ from APP.utils.base import ViewComponent
 from APP.utils.style import GameStyle
 
 class MatchView(ViewComponent):
-    def __init__(self, screen, controller):
+    def __init__(self, screen, controller, asset_manager): ### NOVO: Recebe asset_manager
         """
-        Visualização da Partida com suporte a imagens reais, cache otimizado
-        e layout dinâmico para múltiplos jogadores.
+        Visualização da Partida com suporte a imagens reais via AssetManager.
         """
         super().__init__(screen, controller)
+        self.asset_manager = asset_manager ### NOVO: Guarda a referência
+        
         self.largura, self.altura = self.screen.get_size()
         self.fontes = GameStyle.get_fonts()
-        
         self.model = self.controller.model
         
         # Dimensões base para cartas
         self.card_w = 70
         self.card_h = 100
         
-        # --- CACHE DE IMAGENS ---
-        # Vital para manter 60 FPS ao re-renderizar a mesa
-        self.image_cache = {} 
-        self.path_assets = os.path.join("assets", "cards")
+        # O cache interno foi removido, pois o AssetManager já faz esse papel globalmente
 
-    def _get_card_image(self, card_data, width, height):
-        """
-        Busca imagem no cache ou carrega do disco redimensionando-a.
-        """
-        nome_card = card_data.get("name", "Unknown").replace("/", "_")
-        nome_arquivo = f"{nome_card}.jpg"
-        
-        # Chave única para o cache (Nome + Resolução)
-        cache_key = f"{nome_card}_{width}x{height}"
-        
-        if cache_key in self.image_cache:
-            return self.image_cache[cache_key]
-        
-        # Tenta o path direto enviado pelo controller ou adivinha pela categoria
-        path = card_data.get("image_path")
-        
-        if not path or not os.path.exists(path):
-            tipo = card_data.get("type_line", "")
-            pasta = "Outros"
-            if "Creature" in tipo: pasta = "Criaturas"
-            elif "Land" in tipo: pasta = "Terrenos"
-            elif "Instant" in tipo: pasta = "Instantes"
-            elif "Sorcery" in tipo: pasta = "Feiticos"
-            elif "Enchantment" in tipo: pasta = "Encantamentos"
-            elif "Artifact" in tipo: pasta = "Artefatos"
-            path = os.path.join(self.path_assets, pasta, nome_arquivo)
-
-        if os.path.exists(path):
-            try:
-                img = pygame.image.load(path).convert_alpha()
-                img = pygame.transform.smoothscale(img, (width, height))
-                self.image_cache[cache_key] = img
-                return img
-            except:
-                return None
-        return None
+    def _get_card_category(self, type_line):
+        """Helper para mapear o tipo da carta à pasta de assets."""
+        tipo = type_line or ""
+        if "Creature" in tipo: return "Criaturas"
+        if "Land" in tipo: return "Terrenos"
+        if "Instant" in tipo: return "Instantes"
+        if "Sorcery" in tipo: return "Feiticos"
+        if "Enchantment" in tipo: return "Encantamentos"
+        if "Artifact" in tipo: return "Artefatos"
+        return "Outros"
 
     def handle_events(self, events):
         for event in events:
@@ -78,7 +49,6 @@ class MatchView(ViewComponent):
         return None
 
     def _processar_clique_partida(self, pos):
-        """Detecta interação do jogador humano com as cartas na mão."""
         player = self.model.players.get(1)
         if not player: return
 
@@ -109,23 +79,19 @@ class MatchView(ViewComponent):
             self._renderizar_zona_personalizada(p_id, rect_area)
 
     def _get_area_jogador(self, p_id, qtd):
-        """Calcula o quadrante da tela para cada jogador."""
         w, h = self.largura, self.altura
         if qtd <= 2:
-            # 1vs1: Dividido horizontalmente
             if p_id == 2: return pygame.Rect(0, 0, w, h // 2)      
             if p_id == 1: return pygame.Rect(0, h // 2, w, h // 2) 
         else:
-            # 4 Jogadores: Quadrantes (1=Inf Esq, 2=Sup Esq, 3=Sup Dir, 4=Inf Dir)
             half_w, half_h = w // 2, h // 2
-            if p_id == 2: return pygame.Rect(0, 0, half_w, half_h)         
+            if p_id == 2: return pygame.Rect(0, 0, half_w, half_h)          
             if p_id == 3: return pygame.Rect(half_w, 0, half_w, half_h)    
             if p_id == 1: return pygame.Rect(0, half_h, half_w, half_h)    
             if p_id == 4: return pygame.Rect(half_w, half_h, half_w, half_h)
         return pygame.Rect(0, 0, w, h)
 
     def _renderizar_zona_personalizada(self, p_id, rect):
-        """Desenha o HUD e as zonas de jogo (Mão, Mana, Cemitério)."""
         player = self.model.players[p_id]
         eh_humano = (p_id == 1)
 
@@ -133,7 +99,6 @@ class MatchView(ViewComponent):
         pygame.draw.rect(self.screen, cor_fundo, rect)
         pygame.draw.rect(self.screen, (100, 100, 120), rect, 2) 
 
-        # HUD de Vida e Nome
         info_txt = f"{player.name} | {player.life} PV"
         txt = self.fontes['label'].render(info_txt, True, (255, 255, 255))
         self.screen.blit(txt, (rect.centerx - txt.get_width()//2, rect.y + 5))
@@ -148,7 +113,7 @@ class MatchView(ViewComponent):
             cmd_data = {"name": self.model.commander, "type_line": "Legendary Creature"}
             self._desenhar_carta(rect.x + 15, rect.y + 60, cmd_data, w=50, h=70)
 
-        # 2. ZONA DE MANA (Terrenos em jogo)
+        # 2. ZONA DE MANA
         r_mana = pygame.Rect(rect.x + 5, rect.bottom - (rect.height * 0.35), w_zona - 10, (rect.height * 0.35) - 10)
         self._desenhar_caixa_zona(r_mana, "MANA", (30, 50, 30))
         for i, land in enumerate(player.battlefield_lands):
@@ -161,7 +126,7 @@ class MatchView(ViewComponent):
         r_grave = pygame.Rect(rect.right - w_zona + 5, rect.y + 35, w_zona - 10, h_top - 40)
         self._desenhar_caixa_zona(r_grave, "CEMITÉRIO", (40, 30, 30))
 
-        # 4. MÃO (Se for humano desenha cartas, se bot desenha apenas contador)
+        # 4. MÃO
         if eh_humano:
             self._renderizar_mao(player.hand, rect)
         else:
@@ -175,23 +140,28 @@ class MatchView(ViewComponent):
         self.screen.blit(txt, (rect.x + 5, rect.y + 2))
 
     def _desenhar_carta(self, x, y, card_data, w, h):
-        """Renderiza a imagem da carta ou um fallback visual se não existir."""
-        img = self._get_card_image(card_data, w, h)
-        if img:
-            self.screen.blit(img, (x, y))
-            # Borda fina para definição
+        """NOVO: Pede a imagem ao AssetManager e aplica redimensionamento suave."""
+        nome = card_data.get("name", "Unknown")
+        categoria = self._get_card_category(card_data.get("type_line", ""))
+        
+        # 1. Obtém a imagem original (o AssetManager gerencia o carregamento e cache de disco)
+        img_original = self.asset_manager.get_card_image(nome, category=categoria)
+        
+        if img_original:
+            # 2. Redimensiona para o tamanho solicitado na mesa
+            img_final = pygame.transform.smoothscale(img_original, (w, h))
+            self.screen.blit(img_final, (x, y))
             pygame.draw.rect(self.screen, (0,0,0), (x, y, w, h), 1, border_radius=4)
         else:
-            # FALLBACK
+            # FALLBACK (Caso o arquivo não exista no HD)
             rect = pygame.Rect(x, y, w, h)
             cor = (200, 200, 180)
             if "Land" in card_data.get("type_line", ""): cor = (150, 200, 150)
             pygame.draw.rect(self.screen, cor, rect, border_radius=4)
             pygame.draw.rect(self.screen, (0,0,0), rect, 1, border_radius=4)
             
-            nome = card_data.get('name', '???')[:8]
-            txt = self.fontes['status'].render(nome, True, (0, 0, 0))
-            self.screen.blit(txt, (x + 2, y + 2))
+            txt_nome = self.fontes['status'].render(nome[:8], True, (0, 0, 0))
+            self.screen.blit(txt_nome, (x + 2, y + 2))
 
     def _renderizar_mao(self, hand, rect_area):
         qtd = len(hand)
@@ -199,7 +169,7 @@ class MatchView(ViewComponent):
 
         espacamento = 5
         largura_total_mao = qtd * (self.card_w + espacamento)
-        # Se a mão for muito grande, começa a sobrepor as cartas (estilo MTG Arena)
+        
         if largura_total_mao > rect_area.width * 0.7:
             espacamento = - (largura_total_mao - rect_area.width * 0.7) // qtd
 
@@ -210,6 +180,5 @@ class MatchView(ViewComponent):
             x = start_x + (i * (self.card_w + espacamento))
             self._desenhar_carta(x, y, card, self.card_w, self.card_h)
             
-            # Destaque para terrenos jogáveis
             if "Land" in card.get("type_line", ""):
                 pygame.draw.rect(self.screen, GameStyle.COLOR_ACCENT, (x, y, self.card_w, self.card_h), 2, border_radius=4)

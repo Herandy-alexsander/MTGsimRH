@@ -1,0 +1,17 @@
+{
+    "name": "Ruinous Ultimatum",
+    "type_line": "Sorcery",
+    "mana_cost": "{R}{R}{W}{W}{W}{B}{B}",
+    "cmc": 7.0,
+    "oracle_text": "Destroy all nonland permanents your opponents control.",
+    "power": null,
+    "toughness": null,
+    "rarity": "rare",
+    "colors": [
+        "B",
+        "R",
+        "W"
+    ],
+    "image_url": "assets\\cards\\Feiticos\\ruinous_ultimatum.jpg",
+    "quantity": 1
+}

@@ -1,0 +1,16 @@
+{
+    "name": "Executioner's Swing",
+    "type_line": "Instant",
+    "mana_cost": "{W}{B}",
+    "cmc": 2.0,
+    "oracle_text": "Target creature that dealt damage this turn gets -5/-5 until end of turn.",
+    "power": null,
+    "toughness": null,
+    "rarity": "common",
+    "colors": [
+        "B",
+        "W"
+    ],
+    "image_url": "assets\\cards\\Instantes\\executioner's_swing.jpg",
+    "quantity": 1
+}

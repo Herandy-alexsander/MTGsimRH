@@ -1,0 +1,16 @@
+{
+    "name": "Wear // Tear",
+    "type_line": "Instant // Instant",
+    "mana_cost": "{1}{R} // {W}",
+    "cmc": 3.0,
+    "oracle_text": "",
+    "power": null,
+    "toughness": null,
+    "rarity": "uncommon",
+    "colors": [
+        "R",
+        "W"
+    ],
+    "image_url": "assets\\cards\\Instantes\\wear__tear.jpg",
+    "quantity": 1
+}

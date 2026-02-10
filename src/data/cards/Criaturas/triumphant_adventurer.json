@@ -1,0 +1,16 @@
+{
+    "name": "Triumphant Adventurer",
+    "type_line": "Creature — Human Knight",
+    "mana_cost": "{W}{B}",
+    "cmc": 2.0,
+    "oracle_text": "Deathtouch\nDuring your turn, this creature has first strike.\nWhenever this creature attacks, venture into the dungeon. (Enter the first room or advance to the next room.)",
+    "power": "1",
+    "toughness": "1",
+    "rarity": "rare",
+    "colors": [
+        "B",
+        "W"
+    ],
+    "image_url": "assets\\cards\\Criaturas\\triumphant_adventurer.jpg",
+    "quantity": 1
+}

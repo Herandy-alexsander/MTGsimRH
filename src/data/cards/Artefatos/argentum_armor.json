@@ -1,0 +1,13 @@
+{
+    "name": "Argentum Armor",
+    "type_line": "Artifact — Equipment",
+    "mana_cost": "{6}",
+    "cmc": 6.0,
+    "oracle_text": "Equipped creature gets +6/+6.\nWhenever equipped creature attacks, destroy target permanent.\nEquip {6}",
+    "power": null,
+    "toughness": null,
+    "rarity": "rare",
+    "colors": [],
+    "image_url": "assets\\cards\\Artefatos\\argentum_armor.jpg",
+    "quantity": 1
+}

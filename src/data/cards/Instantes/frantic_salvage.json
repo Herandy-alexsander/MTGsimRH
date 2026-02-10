@@ -1,0 +1,15 @@
+{
+    "name": "Frantic Salvage",
+    "type_line": "Instant",
+    "mana_cost": "{3}{W}",
+    "cmc": 4.0,
+    "oracle_text": "Put any number of target artifact cards from your graveyard on top of your library.\nDraw a card.",
+    "power": null,
+    "toughness": null,
+    "rarity": "common",
+    "colors": [
+        "W"
+    ],
+    "image_url": "assets\\cards\\Instantes\\frantic_salvage.jpg",
+    "quantity": 1
+}

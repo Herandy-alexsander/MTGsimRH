@@ -1,0 +1,13 @@
+{
+    "name": "Jousting Dummy",
+    "type_line": "Artifact Creature — Scarecrow Knight",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "oracle_text": "{3}: This creature gets +1/+0 until end of turn.",
+    "power": "2",
+    "toughness": "1",
+    "rarity": "common",
+    "colors": [],
+    "image_url": "assets\\cards\\Criaturas\\jousting_dummy.jpg",
+    "quantity": 1
+}

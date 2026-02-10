@@ -1,0 +1,13 @@
+{
+    "name": "Caves of Koilos",
+    "type_line": "Land",
+    "mana_cost": "",
+    "cmc": 0.0,
+    "oracle_text": "{T}: Add {C}.\n{T}: Add {W} or {B}. This land deals 1 damage to you.",
+    "power": null,
+    "toughness": null,
+    "rarity": "rare",
+    "colors": [],
+    "image_url": "assets\\cards\\Terrenos\\caves_of_koilos.jpg",
+    "quantity": 1
+}

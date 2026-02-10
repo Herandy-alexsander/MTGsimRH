@@ -1,0 +1,16 @@
+{
+    "name": "Stormfist Crusader",
+    "type_line": "Creature — Human Knight",
+    "mana_cost": "{B}{R}",
+    "cmc": 2.0,
+    "oracle_text": "Menace\nAt the beginning of your upkeep, each player draws a card and loses 1 life.",
+    "power": "2",
+    "toughness": "2",
+    "rarity": "rare",
+    "colors": [
+        "B",
+        "R"
+    ],
+    "image_url": "assets\\cards\\Criaturas\\stormfist_crusader.jpg",
+    "quantity": 1
+}

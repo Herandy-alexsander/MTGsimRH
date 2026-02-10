@@ -1,0 +1,15 @@
+{
+    "name": "Knight Watch",
+    "type_line": "Sorcery",
+    "mana_cost": "{4}{W}",
+    "cmc": 5.0,
+    "oracle_text": "Create two 2/2 white Knight creature tokens with vigilance.",
+    "power": null,
+    "toughness": null,
+    "rarity": "common",
+    "colors": [
+        "W"
+    ],
+    "image_url": "assets\\cards\\Feiticos\\knight_watch.jpg",
+    "quantity": 1
+}

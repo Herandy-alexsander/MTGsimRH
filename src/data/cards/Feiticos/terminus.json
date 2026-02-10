@@ -1,0 +1,15 @@
+{
+    "name": "Terminus",
+    "type_line": "Sorcery",
+    "mana_cost": "{4}{W}{W}",
+    "cmc": 6.0,
+    "oracle_text": "Put all creatures on the bottom of their owners' libraries.\nMiracle {W} (You may cast this card for its miracle cost when you draw it if it's the first card you drew this turn.)",
+    "power": null,
+    "toughness": null,
+    "rarity": "rare",
+    "colors": [
+        "W"
+    ],
+    "image_url": "assets\\cards\\Feiticos\\terminus.jpg",
+    "quantity": 1
+}

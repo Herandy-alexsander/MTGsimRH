@@ -1,0 +1,13 @@
+{
+    "name": "Exotic Orchard",
+    "type_line": "Land",
+    "mana_cost": "",
+    "cmc": 0.0,
+    "oracle_text": "{T}: Add one mana of any color that a land an opponent controls could produce.",
+    "power": null,
+    "toughness": null,
+    "rarity": "rare",
+    "colors": [],
+    "image_url": "assets\\cards\\Terrenos\\exotic_orchard.jpg",
+    "quantity": 1
+}

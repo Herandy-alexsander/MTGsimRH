@@ -1,0 +1,15 @@
+{
+    "name": "Cavalier of Night",
+    "type_line": "Creature — Elemental Knight",
+    "mana_cost": "{2}{B}{B}{B}",
+    "cmc": 5.0,
+    "oracle_text": "Lifelink\nWhen this creature enters, you may sacrifice another creature. When you do, destroy target creature an opponent controls.\nWhen this creature dies, return target creature card with mana value 3 or less from your graveyard to the battlefield.",
+    "power": "4",
+    "toughness": "5",
+    "rarity": "mythic",
+    "colors": [
+        "B"
+    ],
+    "image_url": "assets\\cards\\Criaturas\\cavalier_of_night.jpg",
+    "quantity": 1
+}

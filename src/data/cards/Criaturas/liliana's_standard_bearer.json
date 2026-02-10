@@ -1,0 +1,15 @@
+{
+    "name": "Liliana's Standard Bearer",
+    "type_line": "Creature — Zombie Knight",
+    "mana_cost": "{2}{B}",
+    "cmc": 3.0,
+    "oracle_text": "Flash\nWhen this creature enters, draw X cards, where X is the number of creatures that died under your control this turn.",
+    "power": "3",
+    "toughness": "1",
+    "rarity": "rare",
+    "colors": [
+        "B"
+    ],
+    "image_url": "assets\\cards\\Criaturas\\liliana's_standard_bearer.jpg",
+    "quantity": 1
+}

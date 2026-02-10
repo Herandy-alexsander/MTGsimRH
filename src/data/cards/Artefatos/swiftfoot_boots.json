@@ -1,0 +1,13 @@
+{
+    "name": "Swiftfoot Boots",
+    "type_line": "Artifact — Equipment",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "oracle_text": "Equipped creature has hexproof and haste. (It can't be the target of spells or abilities your opponents control. It can attack and {T} no matter when it came under your control.)\nEquip {1} ({1}: Attach to target creature you control. Equip only as a sorcery.)",
+    "power": null,
+    "toughness": null,
+    "rarity": "uncommon",
+    "colors": [],
+    "image_url": "assets\\cards\\Artefatos\\swiftfoot_boots.jpg",
+    "quantity": 1
+}

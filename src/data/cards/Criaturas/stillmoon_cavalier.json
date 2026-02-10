@@ -1,0 +1,16 @@
+{
+    "name": "Stillmoon Cavalier",
+    "type_line": "Creature — Zombie Knight",
+    "mana_cost": "{1}{W/B}{W/B}",
+    "cmc": 3.0,
+    "oracle_text": "Protection from white and from black\n{W/B}: This creature gains flying until end of turn.\n{W/B}: This creature gains first strike until end of turn.\n{W/B}{W/B}: This creature gets +1/+0 until end of turn.",
+    "power": "2",
+    "toughness": "1",
+    "rarity": "rare",
+    "colors": [
+        "B",
+        "W"
+    ],
+    "image_url": "assets\\cards\\Criaturas\\stillmoon_cavalier.jpg",
+    "quantity": 1
+}

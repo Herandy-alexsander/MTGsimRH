@@ -1,0 +1,15 @@
+{
+    "name": "Knight of Meadowgrain",
+    "type_line": "Creature — Kithkin Knight",
+    "mana_cost": "{W}{W}",
+    "cmc": 2.0,
+    "oracle_text": "First strike\nLifelink (Damage dealt by this creature also causes you to gain that much life.)",
+    "power": "2",
+    "toughness": "2",
+    "rarity": "uncommon",
+    "colors": [
+        "W"
+    ],
+    "image_url": "assets\\cards\\Criaturas\\knight_of_meadowgrain.jpg",
+    "quantity": 1
+}

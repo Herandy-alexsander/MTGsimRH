@@ -1,0 +1,15 @@
+{
+    "name": "True Conviction",
+    "type_line": "Enchantment",
+    "mana_cost": "{3}{W}{W}{W}",
+    "cmc": 6.0,
+    "oracle_text": "Creatures you control have double strike and lifelink.",
+    "power": null,
+    "toughness": null,
+    "rarity": "rare",
+    "colors": [
+        "W"
+    ],
+    "image_url": "assets\\cards\\Encantamentos\\true_conviction.jpg",
+    "quantity": 1
+}

@@ -1,0 +1,13 @@
+{
+    "name": "Mind Stone",
+    "type_line": "Artifact",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "oracle_text": "{T}: Add {C}.\n{1}, {T}, Sacrifice this artifact: Draw a card.",
+    "power": null,
+    "toughness": null,
+    "rarity": "uncommon",
+    "colors": [],
+    "image_url": "assets\\cards\\Artefatos\\mind_stone.jpg",
+    "quantity": 1
+}

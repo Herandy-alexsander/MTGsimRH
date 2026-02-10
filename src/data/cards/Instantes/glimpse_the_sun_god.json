@@ -1,0 +1,15 @@
+{
+    "name": "Glimpse the Sun God",
+    "type_line": "Instant",
+    "mana_cost": "{X}{W}",
+    "cmc": 1.0,
+    "oracle_text": "Tap X target creatures. Scry 1. (Look at the top card of your library. You may put that card on the bottom.)",
+    "power": null,
+    "toughness": null,
+    "rarity": "uncommon",
+    "colors": [
+        "W"
+    ],
+    "image_url": "assets\\cards\\Instantes\\glimpse_the_sun_god.jpg",
+    "quantity": 1
+}

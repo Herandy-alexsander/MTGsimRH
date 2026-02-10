@@ -1,0 +1,16 @@
+{
+    "name": "Gleam of Battle",
+    "type_line": "Enchantment",
+    "mana_cost": "{4}{R}{W}",
+    "cmc": 6.0,
+    "oracle_text": "Whenever a creature you control attacks, put a +1/+1 counter on it.",
+    "power": null,
+    "toughness": null,
+    "rarity": "uncommon",
+    "colors": [
+        "R",
+        "W"
+    ],
+    "image_url": "assets\\cards\\Encantamentos\\gleam_of_battle.jpg",
+    "quantity": 1
+}

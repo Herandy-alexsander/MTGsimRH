@@ -1,0 +1,16 @@
+{
+    "name": "Sunrise Cavalier",
+    "type_line": "Creature — Human Knight",
+    "mana_cost": "{1}{R}{W}",
+    "cmc": 3.0,
+    "oracle_text": "Trample, haste\nIf it's neither day nor night, it becomes day as this creature enters.\nWhenever day becomes night or night becomes day, put a +1/+1 counter on target creature you control.",
+    "power": "3",
+    "toughness": "3",
+    "rarity": "uncommon",
+    "colors": [
+        "R",
+        "W"
+    ],
+    "image_url": "assets\\cards\\Criaturas\\sunrise_cavalier.jpg",
+    "quantity": 1
+}

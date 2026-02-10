@@ -1,0 +1,16 @@
+{
+    "name": "Bedevil",
+    "type_line": "Instant",
+    "mana_cost": "{B}{B}{R}",
+    "cmc": 3.0,
+    "oracle_text": "Destroy target artifact, creature, or planeswalker.",
+    "power": null,
+    "toughness": null,
+    "rarity": "rare",
+    "colors": [
+        "B",
+        "R"
+    ],
+    "image_url": "assets\\cards\\Instantes\\bedevil.jpg",
+    "quantity": 1
+}

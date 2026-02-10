@@ -1,0 +1,13 @@
+{
+    "name": "Hot Soup",
+    "type_line": "Artifact — Equipment",
+    "mana_cost": "{1}",
+    "cmc": 1.0,
+    "oracle_text": "Equipped creature can't be blocked.\nWhenever equipped creature is dealt damage, destroy it.\nEquip {3} ({3}: Attach to target creature you control. Equip only as a sorcery.)",
+    "power": null,
+    "toughness": null,
+    "rarity": "uncommon",
+    "colors": [],
+    "image_url": "assets\\cards\\Artefatos\\hot_soup.jpg",
+    "quantity": 1
+}

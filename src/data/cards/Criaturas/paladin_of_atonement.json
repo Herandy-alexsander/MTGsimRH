@@ -1,0 +1,15 @@
+{
+    "name": "Paladin of Atonement",
+    "type_line": "Creature — Vampire Knight",
+    "mana_cost": "{1}{W}",
+    "cmc": 2.0,
+    "oracle_text": "At the beginning of each upkeep, if you lost life last turn, put a +1/+1 counter on this creature.\nWhen this creature dies, you gain life equal to its toughness.",
+    "power": "1",
+    "toughness": "1",
+    "rarity": "rare",
+    "colors": [
+        "W"
+    ],
+    "image_url": "assets\\cards\\Criaturas\\paladin_of_atonement.jpg",
+    "quantity": 1
+}

@@ -1,0 +1,13 @@
+{
+    "name": "Mirror Shield",
+    "type_line": "Artifact — Equipment",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "oracle_text": "Equipped creature gets +0/+2 and has hexproof and \"Whenever a creature with deathtouch blocks or becomes blocked by this creature, destroy that creature.\"\nEquip {2} ({2}: Attach to target creature you control. Equip only as a sorcery.)",
+    "power": null,
+    "toughness": null,
+    "rarity": "uncommon",
+    "colors": [],
+    "image_url": "assets\\cards\\Artefatos\\mirror_shield.jpg",
+    "quantity": 1
+}

@@ -1,0 +1,13 @@
+{
+    "name": "Sanctuary Blade",
+    "type_line": "Artifact — Equipment",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "oracle_text": "As this Equipment becomes attached to a creature, choose a color.\nEquipped creature gets +2/+0 and has protection from the last chosen color.\nEquip {3}",
+    "power": null,
+    "toughness": null,
+    "rarity": "rare",
+    "colors": [],
+    "image_url": "assets\\cards\\Artefatos\\sanctuary_blade.jpg",
+    "quantity": 1
+}

@@ -1,0 +1,15 @@
+{
+    "name": "Bloodsworn Steward",
+    "type_line": "Creature — Vampire Knight",
+    "mana_cost": "{2}{R}{R}",
+    "cmc": 4.0,
+    "oracle_text": "Flying\nCommander creatures you control get +2/+2 and have haste.",
+    "power": "4",
+    "toughness": "4",
+    "rarity": "rare",
+    "colors": [
+        "R"
+    ],
+    "image_url": "assets\\cards\\Criaturas\\bloodsworn_steward.jpg",
+    "quantity": 1
+}

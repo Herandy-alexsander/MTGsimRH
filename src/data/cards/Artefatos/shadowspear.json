@@ -1,0 +1,13 @@
+{
+    "name": "Shadowspear",
+    "type_line": "Legendary Artifact — Equipment",
+    "mana_cost": "{1}",
+    "cmc": 1.0,
+    "oracle_text": "Equipped creature gets +1/+1 and has trample and lifelink.\n{1}: Permanents your opponents control lose hexproof and indestructible until end of turn.\nEquip {2}",
+    "power": null,
+    "toughness": null,
+    "rarity": "rare",
+    "colors": [],
+    "image_url": "assets\\cards\\Artefatos\\shadowspear.jpg",
+    "quantity": 1
+}

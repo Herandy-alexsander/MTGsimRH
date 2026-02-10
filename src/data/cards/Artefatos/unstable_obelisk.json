@@ -1,0 +1,13 @@
+{
+    "name": "Unstable Obelisk",
+    "type_line": "Artifact",
+    "mana_cost": "{3}",
+    "cmc": 3.0,
+    "oracle_text": "{T}: Add {C}.\n{7}, {T}, Sacrifice this artifact: Destroy target permanent.",
+    "power": null,
+    "toughness": null,
+    "rarity": "common",
+    "colors": [],
+    "image_url": "assets\\cards\\Artefatos\\unstable_obelisk.jpg",
+    "quantity": 1
+}

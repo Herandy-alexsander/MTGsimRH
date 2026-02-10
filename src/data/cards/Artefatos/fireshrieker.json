@@ -1,0 +1,13 @@
+{
+    "name": "Fireshrieker",
+    "type_line": "Artifact — Equipment",
+    "mana_cost": "{3}",
+    "cmc": 3.0,
+    "oracle_text": "Equipped creature has double strike. (It deals both first-strike and regular combat damage.)\nEquip {2} ({2}: Attach to target creature you control. Equip only as a sorcery.)",
+    "power": null,
+    "toughness": null,
+    "rarity": "uncommon",
+    "colors": [],
+    "image_url": "assets\\cards\\Artefatos\\fireshrieker.jpg",
+    "quantity": 1
+}

@@ -1,0 +1,15 @@
+{
+    "name": "Hedgewitch's Mask",
+    "type_line": "Artifact — Equipment",
+    "mana_cost": "{W}",
+    "cmc": 1.0,
+    "oracle_text": "Equipped creature gets +1/+1.\nEquipped creature can't be blocked by creatures with power 4 or greater.\nEquip {2} ({2}: Attach to target creature you control. Equip only as a sorcery.)",
+    "power": null,
+    "toughness": null,
+    "rarity": "common",
+    "colors": [
+        "W"
+    ],
+    "image_url": "assets\\cards\\Artefatos\\hedgewitch's_mask.jpg",
+    "quantity": 1
+}

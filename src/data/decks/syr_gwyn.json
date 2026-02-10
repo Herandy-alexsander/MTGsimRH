@@ -1,0 +1,511 @@
+{
+    "name": "Syr Gwyn",
+    "commander": "Syr Gwyn, Hero of Ashvale",
+    "deck_id": "3",
+    "total_cards": 98,
+    "last_updated": "2026-02-10 18:18:56",
+    "categories": {
+        "Terrenos": [
+            {
+                "name": "Tainted Field",
+                "quantity": 1,
+                "data_path": "data\\cards\\Terrenos\\tainted_field.json"
+            },
+            {
+                "name": "Tournament Grounds",
+                "quantity": 1,
+                "data_path": "data\\cards\\Terrenos\\tournament_grounds.json"
+            },
+            {
+                "name": "Bloodfell Caves",
+                "quantity": 1,
+                "data_path": "data\\cards\\Terrenos\\bloodfell_caves.json"
+            },
+            {
+                "name": "Caves of Koilos",
+                "quantity": 1,
+                "data_path": "data\\cards\\Terrenos\\caves_of_koilos.json"
+            },
+            {
+                "name": "Battlefield Forge",
+                "quantity": 1,
+                "data_path": "data\\cards\\Terrenos\\battlefield_forge.json"
+            },
+            {
+                "name": "Boros Garrison",
+                "quantity": 1,
+                "data_path": "data\\cards\\Terrenos\\boros_garrison.json"
+            },
+            {
+                "name": "Mountain",
+                "quantity": 7,
+                "data_path": "data\\cards\\Terrenos\\mountain.json"
+            },
+            {
+                "name": "Swamp",
+                "quantity": 6,
+                "data_path": "data\\cards\\Terrenos\\swamp.json"
+            },
+            {
+                "name": "Wind-Scarred Crag",
+                "quantity": 1,
+                "data_path": "data\\cards\\Terrenos\\wind-scarred_crag.json"
+            },
+            {
+                "name": "Plains",
+                "quantity": 7,
+                "data_path": "data\\cards\\Terrenos\\plains.json"
+            },
+            {
+                "name": "Exotic Orchard",
+                "quantity": 1,
+                "data_path": "data\\cards\\Terrenos\\exotic_orchard.json"
+            },
+            {
+                "name": "Boros Guildgate",
+                "quantity": 1,
+                "data_path": "data\\cards\\Terrenos\\boros_guildgate.json"
+            },
+            {
+                "name": "Orzhov Guildgate",
+                "quantity": 1,
+                "data_path": "data\\cards\\Terrenos\\orzhov_guildgate.json"
+            },
+            {
+                "name": "Rakdos Guildgate",
+                "quantity": 1,
+                "data_path": "data\\cards\\Terrenos\\rakdos_guildgate.json"
+            },
+            {
+                "name": "Nomad Outpost",
+                "quantity": 1,
+                "data_path": "data\\cards\\Terrenos\\nomad_outpost.json"
+            },
+            {
+                "name": "Akoum Refuge",
+                "quantity": 1,
+                "data_path": "data\\cards\\Terrenos\\akoum_refuge.json"
+            },
+            {
+                "name": "Forsaken Sanctuary",
+                "quantity": 1,
+                "data_path": "data\\cards\\Terrenos\\forsaken_sanctuary.json"
+            },
+            {
+                "name": "Evolving Wilds",
+                "quantity": 1,
+                "data_path": "data\\cards\\Terrenos\\evolving_wilds.json"
+            },
+            {
+                "name": "Command Tower",
+                "quantity": 1,
+                "data_path": "data\\cards\\Terrenos\\command_tower.json"
+            }
+        ],
+        "Criaturas": [
+            {
+                "name": "Student of Warfare",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\student_of_warfare.json"
+            },
+            {
+                "name": "Triumphant Adventurer",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\triumphant_adventurer.json"
+            },
+            {
+                "name": "Jousting Dummy",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\jousting_dummy.json"
+            },
+            {
+                "name": "Silver Knight",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\silver_knight.json"
+            },
+            {
+                "name": "Knight of Meadowgrain",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\knight_of_meadowgrain.json"
+            },
+            {
+                "name": "Wintermoor Commander",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\wintermoor_commander.json"
+            },
+            {
+                "name": "Stormfist Crusader",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\stormfist_crusader.json"
+            },
+            {
+                "name": "Paladin of Atonement",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\paladin_of_atonement.json"
+            },
+            {
+                "name": "Sunrise Cavalier",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\sunrise_cavalier.json"
+            },
+            {
+                "name": "Stillmoon Cavalier",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\stillmoon_cavalier.json"
+            },
+            {
+                "name": "Mirran Crusader",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\mirran_crusader.json"
+            },
+            {
+                "name": "Danitha Capashen, Paragon",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\danitha_capashen,_paragon.json"
+            },
+            {
+                "name": "Cryptolith Fragment // Aurora of Emrakul",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\cryptolith_fragment__aurora_of_emrakul.json"
+            },
+            {
+                "name": "Nadaar, Selfless Paladin",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\nadaar,_selfless_paladin.json"
+            },
+            {
+                "name": "Silverblade Paladin",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\silverblade_paladin.json"
+            },
+            {
+                "name": "Liliana's Standard Bearer",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\liliana's_standard_bearer.json"
+            },
+            {
+                "name": "Varchild, Betrayer of Kjeldor",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\varchild,_betrayer_of_kjeldor.json"
+            },
+            {
+                "name": "Armored Skyhunter",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\armored_skyhunter.json"
+            },
+            {
+                "name": "Riders of Gavony",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\riders_of_gavony.json"
+            },
+            {
+                "name": "Bloodsworn Steward",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\bloodsworn_steward.json"
+            },
+            {
+                "name": "Josu Vess, Lich Knight",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\josu_vess,_lich_knight.json"
+            },
+            {
+                "name": "Embereth Skyblazer",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\embereth_skyblazer.json"
+            },
+            {
+                "name": "Cavalier of Night",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\cavalier_of_night.json"
+            },
+            {
+                "name": "Dawnstrike Paladin",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\dawnstrike_paladin.json"
+            },
+            {
+                "name": "Silverwing Squadron",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\silverwing_squadron.json"
+            },
+            {
+                "name": "Lena, Selfless Champion",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\lena,_selfless_champion.json"
+            },
+            {
+                "name": "Syr Gwyn, Hero of Ashvale",
+                "quantity": 1,
+                "data_path": "data\\cards\\Criaturas\\syr_gwyn,_hero_of_ashvale.json"
+            }
+        ],
+        "Artefatos": [
+            {
+                "name": "Shadowspear",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\shadowspear.json"
+            },
+            {
+                "name": "Hedgewitch's Mask",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\hedgewitch's_mask.json"
+            },
+            {
+                "name": "Colossus Hammer",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\colossus_hammer.json"
+            },
+            {
+                "name": "Swiftfoot Boots",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\swiftfoot_boots.json"
+            },
+            {
+                "name": "Mirror Shield",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\mirror_shield.json"
+            },
+            {
+                "name": "Sword of the Animist",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\sword_of_the_animist.json"
+            },
+            {
+                "name": "Mirror of the Forebears",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\mirror_of_the_forebears.json"
+            },
+            {
+                "name": "Sanctuary Blade",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\sanctuary_blade.json"
+            },
+            {
+                "name": "Prismatic Lens",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\prismatic_lens.json"
+            },
+            {
+                "name": "Mind Stone",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\mind_stone.json"
+            },
+            {
+                "name": "Goldvein Pick",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\goldvein_pick.json"
+            },
+            {
+                "name": "Fleetfeather Sandals",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\fleetfeather_sandals.json"
+            },
+            {
+                "name": "Replicating Ring",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\replicating_ring.json"
+            },
+            {
+                "name": "Chariot of Victory",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\chariot_of_victory.json"
+            },
+            {
+                "name": "Commander's Sphere",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\commander's_sphere.json"
+            },
+            {
+                "name": "Quietus Spike",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\quietus_spike.json"
+            },
+            {
+                "name": "Sword of Vengeance",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\sword_of_vengeance.json"
+            },
+            {
+                "name": "Inspiring Statuary",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\inspiring_statuary.json"
+            },
+            {
+                "name": "Fireshrieker",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\fireshrieker.json"
+            },
+            {
+                "name": "Heirloom Blade",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\heirloom_blade.json"
+            },
+            {
+                "name": "Mask of Griselbrand",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\mask_of_griselbrand.json"
+            },
+            {
+                "name": "Mace of the Valiant",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\mace_of_the_valiant.json"
+            },
+            {
+                "name": "Loxodon Warhammer",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\loxodon_warhammer.json"
+            },
+            {
+                "name": "Unstable Obelisk",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\unstable_obelisk.json"
+            },
+            {
+                "name": "Vessel of Endless Rest",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\vessel_of_endless_rest.json"
+            },
+            {
+                "name": "Haunted Plate Mail",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\haunted_plate_mail.json"
+            },
+            {
+                "name": "The Circle of Loyalty",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\the_circle_of_loyalty.json"
+            },
+            {
+                "name": "Argentum Armor",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\argentum_armor.json"
+            },
+            {
+                "name": "Hedron Blade",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\hedron_blade.json"
+            },
+            {
+                "name": "Hot Soup",
+                "quantity": 1,
+                "data_path": "data\\cards\\Artefatos\\hot_soup.json"
+            }
+        ],
+        "Encantamentos": [
+            {
+                "name": "Fighter Class",
+                "quantity": 1,
+                "data_path": "data\\cards\\Encantamentos\\fighter_class.json"
+            },
+            {
+                "name": "History of Benalia",
+                "quantity": 1,
+                "data_path": "data\\cards\\Encantamentos\\history_of_benalia.json"
+            },
+            {
+                "name": "Thorough Investigation",
+                "quantity": 1,
+                "data_path": "data\\cards\\Encantamentos\\thorough_investigation.json"
+            },
+            {
+                "name": "True Conviction",
+                "quantity": 1,
+                "data_path": "data\\cards\\Encantamentos\\true_conviction.json"
+            },
+            {
+                "name": "Demonic Embrace",
+                "quantity": 1,
+                "data_path": "data\\cards\\Encantamentos\\demonic_embrace.json"
+            },
+            {
+                "name": "Gift of Orzhova",
+                "quantity": 1,
+                "data_path": "data\\cards\\Encantamentos\\gift_of_orzhova.json"
+            },
+            {
+                "name": "Anthem of Rakdos",
+                "quantity": 1,
+                "data_path": "data\\cards\\Encantamentos\\anthem_of_rakdos.json"
+            },
+            {
+                "name": "Gleam of Battle",
+                "quantity": 1,
+                "data_path": "data\\cards\\Encantamentos\\gleam_of_battle.json"
+            }
+        ],
+        "Instantes": [
+            {
+                "name": "Bedevil",
+                "quantity": 1,
+                "data_path": "data\\cards\\Instantes\\bedevil.json"
+            },
+            {
+                "name": "Sudden Spoiling",
+                "quantity": 1,
+                "data_path": "data\\cards\\Instantes\\sudden_spoiling.json"
+            },
+            {
+                "name": "Crackling Doom",
+                "quantity": 1,
+                "data_path": "data\\cards\\Instantes\\crackling_doom.json"
+            },
+            {
+                "name": "Faith's Shield",
+                "quantity": 1,
+                "data_path": "data\\cards\\Instantes\\faith's_shield.json"
+            },
+            {
+                "name": "Glimpse the Sun God",
+                "quantity": 1,
+                "data_path": "data\\cards\\Instantes\\glimpse_the_sun_god.json"
+            },
+            {
+                "name": "Executioner's Swing",
+                "quantity": 1,
+                "data_path": "data\\cards\\Instantes\\executioner's_swing.json"
+            },
+            {
+                "name": "Encircling Fissure",
+                "quantity": 1,
+                "data_path": "data\\cards\\Instantes\\encircling_fissure.json"
+            },
+            {
+                "name": "Harmless Assault",
+                "quantity": 1,
+                "data_path": "data\\cards\\Instantes\\harmless_assault.json"
+            },
+            {
+                "name": "Frantic Salvage",
+                "quantity": 1,
+                "data_path": "data\\cards\\Instantes\\frantic_salvage.json"
+            },
+            {
+                "name": "Wear // Tear",
+                "quantity": 1,
+                "data_path": "data\\cards\\Instantes\\wear__tear.json"
+            }
+        ],
+        "Feiticos": [
+            {
+                "name": "Terminus",
+                "quantity": 1,
+                "data_path": "data\\cards\\Feiticos\\terminus.json"
+            },
+            {
+                "name": "Ruinous Ultimatum",
+                "quantity": 1,
+                "data_path": "data\\cards\\Feiticos\\ruinous_ultimatum.json"
+            },
+            {
+                "name": "Knight Watch",
+                "quantity": 1,
+                "data_path": "data\\cards\\Feiticos\\knight_watch.json"
+            },
+            {
+                "name": "Merciless Eviction",
+                "quantity": 1,
+                "data_path": "data\\cards\\Feiticos\\merciless_eviction.json"
+            }
+        ]
+    }
+}

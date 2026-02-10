@@ -1,0 +1,15 @@
+{
+    "name": "Embereth Skyblazer",
+    "type_line": "Creature — Human Knight",
+    "mana_cost": "{3}{R}",
+    "cmc": 4.0,
+    "oracle_text": "During your turn, this creature has flying.\nWhenever this creature attacks, you may pay {2}{R}. If you do, creatures you control get +X/+0 until end of turn, where X is the number of opponents you have.",
+    "power": "4",
+    "toughness": "3",
+    "rarity": "rare",
+    "colors": [
+        "R"
+    ],
+    "image_url": "assets\\cards\\Criaturas\\embereth_skyblazer.jpg",
+    "quantity": 1
+}

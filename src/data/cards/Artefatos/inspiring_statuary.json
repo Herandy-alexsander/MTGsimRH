@@ -1,0 +1,13 @@
+{
+    "name": "Inspiring Statuary",
+    "type_line": "Artifact",
+    "mana_cost": "{3}",
+    "cmc": 3.0,
+    "oracle_text": "Nonartifact spells you cast have improvise. (Your artifacts can help cast those spells. Each artifact you tap after you're done activating mana abilities pays for {1}.)",
+    "power": null,
+    "toughness": null,
+    "rarity": "rare",
+    "colors": [],
+    "image_url": "assets\\cards\\Artefatos\\inspiring_statuary.jpg",
+    "quantity": 1
+}

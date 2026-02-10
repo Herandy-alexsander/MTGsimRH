@@ -1,0 +1,13 @@
+{
+    "name": "Replicating Ring",
+    "type_line": "Snow Artifact",
+    "mana_cost": "{3}",
+    "cmc": 3.0,
+    "oracle_text": "{T}: Add one mana of any color.\nAt the beginning of your upkeep, put a night counter on this artifact. Then if it has eight or more night counters on it, remove all of them and create eight colorless snow artifact tokens named Replicated Ring with \"{T}: Add one mana of any color.\"",
+    "power": null,
+    "toughness": null,
+    "rarity": "uncommon",
+    "colors": [],
+    "image_url": "assets\\cards\\Artefatos\\replicating_ring.jpg",
+    "quantity": 1
+}

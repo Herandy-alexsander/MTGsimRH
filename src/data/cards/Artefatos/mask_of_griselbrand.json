@@ -1,0 +1,15 @@
+{
+    "name": "Mask of Griselbrand",
+    "type_line": "Legendary Artifact — Equipment",
+    "mana_cost": "{1}{B}{B}",
+    "cmc": 3.0,
+    "oracle_text": "Equipped creature has flying and lifelink.\nWhenever equipped creature dies, you may pay X life, where X is its power. If you do, draw X cards.\nEquip {3}",
+    "power": null,
+    "toughness": null,
+    "rarity": "rare",
+    "colors": [
+        "B"
+    ],
+    "image_url": "assets\\cards\\Artefatos\\mask_of_griselbrand.jpg",
+    "quantity": 1
+}

@@ -1,0 +1,16 @@
+{
+    "name": "Merciless Eviction",
+    "type_line": "Sorcery",
+    "mana_cost": "{4}{W}{B}",
+    "cmc": 6.0,
+    "oracle_text": "Choose one —\n• Exile all artifacts.\n• Exile all creatures.\n• Exile all enchantments.\n• Exile all planeswalkers.",
+    "power": null,
+    "toughness": null,
+    "rarity": "rare",
+    "colors": [
+        "B",
+        "W"
+    ],
+    "image_url": "assets\\cards\\Feiticos\\merciless_eviction.jpg",
+    "quantity": 1
+}

@@ -1,0 +1,13 @@
+{
+    "name": "Fleetfeather Sandals",
+    "type_line": "Artifact — Equipment",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "oracle_text": "Equipped creature has flying and haste.\nEquip {2} ({2}: Attach to target creature you control. Equip only as a sorcery.)",
+    "power": null,
+    "toughness": null,
+    "rarity": "common",
+    "colors": [],
+    "image_url": "assets\\cards\\Artefatos\\fleetfeather_sandals.jpg",
+    "quantity": 1
+}

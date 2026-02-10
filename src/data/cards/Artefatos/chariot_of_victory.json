@@ -1,0 +1,13 @@
+{
+    "name": "Chariot of Victory",
+    "type_line": "Artifact — Equipment",
+    "mana_cost": "{3}",
+    "cmc": 3.0,
+    "oracle_text": "Equipped creature has first strike, trample, and haste.\nEquip {1}",
+    "power": null,
+    "toughness": null,
+    "rarity": "uncommon",
+    "colors": [],
+    "image_url": "assets\\cards\\Artefatos\\chariot_of_victory.jpg",
+    "quantity": 1
+}

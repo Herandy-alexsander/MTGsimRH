@@ -1,4 +1,5 @@
 import random
+import os
 from APP.models.match_model import PlayerModel
 
 class MatchController:
@@ -15,7 +16,7 @@ class MatchController:
         """
         self.model.players = {} # Limpa estados de partidas anteriores
         
-        # 1. Registra o Comandante no Modelo (Correção do erro AttributeError)
+        # 1. Registra o Comandante no Modelo
         self.model.commander = commander_name
         
         # 2. Configura o Jogador Humano (ID 1)
@@ -29,9 +30,7 @@ class MatchController:
 
         # 3. Configura os Oponentes (Bots) baseado na seleção do Menu
         for i in range(2, self.total_players + 1):
-            # Clona o deck humano para os bots como base de teste
-            # (Futuramente você pode carregar decks específicos para bots)
-            deck_bot = list(deck_humano) 
+            deck_bot = self._expand_deck(human_deck_data) # Expande novamente para ter cópias limpas
             random.shuffle(deck_bot)
             
             bot = PlayerModel(f"Oponente {i-1}", deck_bot)
@@ -49,29 +48,46 @@ class MatchController:
 
     def _expand_deck(self, cards_json):
         """
-        Transforma a lista compactada do JSON (com quantidades) em uma lista 
-        de objetos de carta individuais para a biblioteca.
+        Transforma a lista compactada do JSON em objetos individuais e
+        atribui o caminho local da imagem para a View.
         """
         deck = []
-        # Garante que percorremos a estrutura de categorias do deck
         for c in cards_json:
             qtd = c.get('quantity', 1)
             for _ in range(qtd):
-                # Usamos copy() para que alterações em uma carta (ex: virar) 
-                # não afetem outras cópias da mesma carta
-                deck.append(c.copy())
+                carta_instancia = c.copy()
+                
+                # AÇÃO: Mapeia o caminho da imagem antes de adicionar ao deck
+                carta_instancia['image_path'] = self._definir_caminho_imagem(carta_instancia)
+                
+                deck.append(carta_instancia)
         return deck
 
+    def _definir_caminho_imagem(self, carta):
+        """
+        Lógica para encontrar a imagem na estrutura de pastas assets/cards/
+        """
+        tipo = carta.get("type_line", "")
+        # Normaliza o nome para o arquivo (remove barras de cartas dupla-face)
+        nome_arquivo = carta.get("name", "unknown").replace("/", "_") + ".jpg"
+        
+        # Mapeamento de pastas baseado no tipo
+        pasta = "Outros"
+        if "Creature" in tipo: pasta = "Criaturas"
+        elif "Land" in tipo: pasta = "Terrenos"
+        elif "Instant" in tipo: pasta = "Instantes"
+        elif "Sorcery" in tipo: pasta = "Feiticos"
+        elif "Enchantment" in tipo: pasta = "Encantamentos"
+        elif "Artifact" in tipo: pasta = "Artefatos"
+        
+        # Retorna o caminho relativo para ser usado pelo pygame.image.load
+        return os.path.join("assets", "cards", pasta, nome_arquivo)
+
     def play_land(self, player_id, card_index):
-        """
-        Move um terreno da mão para o campo de batalha se for válido.
-        """
+        """Move um terreno da mão para o campo de batalha."""
         player = self.model.players.get(player_id)
-        # Verifica se o jogador existe e se o índice é válido
         if player and 0 <= card_index < len(player.hand):
             card = player.hand[card_index]
-            
-            # Verifica se é realmente um terreno antes de mover
             if "Land" in card.get("type_line", ""):
                 card_movida = player.hand.pop(card_index)
                 player.battlefield_lands.append(card_movida)
@@ -88,7 +104,7 @@ class MatchController:
             print(f"[JOGO] {player.name} comprou uma carta.")
             
     def mudar_vida(self, player_id, quantidade):
-        """Altera o total de vida do jogador (Dano ou Ganho de Vida)."""
+        """Altera o total de vida do jogador."""
         player = self.model.players.get(player_id)
         if player:
             player.life += quantidade

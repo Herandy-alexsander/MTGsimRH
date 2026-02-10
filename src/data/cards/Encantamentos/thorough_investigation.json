@@ -1,0 +1,15 @@
+{
+    "name": "Thorough Investigation",
+    "type_line": "Enchantment",
+    "mana_cost": "{2}{W}",
+    "cmc": 3.0,
+    "oracle_text": "Whenever you attack, investigate. (Create a Clue token. It's an artifact with \"{2}, Sacrifice this token: Draw a card.\")\nWhenever you sacrifice a Clue, venture into the dungeon. (Enter the first room or advance to the next room.)",
+    "power": null,
+    "toughness": null,
+    "rarity": "rare",
+    "colors": [
+        "W"
+    ],
+    "image_url": "assets\\cards\\Encantamentos\\thorough_investigation.jpg",
+    "quantity": 1
+}

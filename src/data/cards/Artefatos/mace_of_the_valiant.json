@@ -1,0 +1,15 @@
+{
+    "name": "Mace of the Valiant",
+    "type_line": "Artifact — Equipment",
+    "mana_cost": "{2}{W}",
+    "cmc": 3.0,
+    "oracle_text": "Equipped creature gets +1/+1 for each charge counter on this Equipment and has vigilance. (Attacking doesn't cause it to tap.)\nWhenever a creature you control enters, put a charge counter on this Equipment.\nEquip {3}",
+    "power": null,
+    "toughness": null,
+    "rarity": "uncommon",
+    "colors": [
+        "W"
+    ],
+    "image_url": "assets\\cards\\Artefatos\\mace_of_the_valiant.jpg",
+    "quantity": 1
+}

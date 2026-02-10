@@ -1,0 +1,15 @@
+{
+    "name": "Nadaar, Selfless Paladin",
+    "type_line": "Legendary Creature — Dragon Knight",
+    "mana_cost": "{2}{W}",
+    "cmc": 3.0,
+    "oracle_text": "Vigilance\nWhenever Nadaar enters or attacks, venture into the dungeon. (Enter the first room or advance to the next room.)\nOther creatures you control get +1/+1 as long as you've completed a dungeon.",
+    "power": "3",
+    "toughness": "3",
+    "rarity": "rare",
+    "colors": [
+        "W"
+    ],
+    "image_url": "assets\\cards\\Criaturas\\nadaar,_selfless_paladin.jpg",
+    "quantity": 1
+}

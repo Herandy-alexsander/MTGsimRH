@@ -1,0 +1,13 @@
+{
+    "name": "Prismatic Lens",
+    "type_line": "Artifact",
+    "mana_cost": "{2}",
+    "cmc": 2.0,
+    "oracle_text": "{T}: Add {C}.\n{1}, {T}: Add one mana of any color.",
+    "power": null,
+    "toughness": null,
+    "rarity": "uncommon",
+    "colors": [],
+    "image_url": "assets\\cards\\Artefatos\\prismatic_lens.jpg",
+    "quantity": 1
+}

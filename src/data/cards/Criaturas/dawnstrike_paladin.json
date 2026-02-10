@@ -1,0 +1,15 @@
+{
+    "name": "Dawnstrike Paladin",
+    "type_line": "Creature — Human Knight",
+    "mana_cost": "{3}{W}{W}",
+    "cmc": 5.0,
+    "oracle_text": "Vigilance (Attacking doesn't cause this creature to tap.)\nLifelink (Damage dealt by this creature also causes you to gain that much life.)",
+    "power": "2",
+    "toughness": "4",
+    "rarity": "common",
+    "colors": [
+        "W"
+    ],
+    "image_url": "assets\\cards\\Criaturas\\dawnstrike_paladin.jpg",
+    "quantity": 1
+}

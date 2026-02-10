@@ -1,0 +1,15 @@
+{
+    "name": "The Circle of Loyalty",
+    "type_line": "Legendary Artifact",
+    "mana_cost": "{4}{W}{W}",
+    "cmc": 6.0,
+    "oracle_text": "Affinity for Knights (This spell costs {1} less to cast for each Knight you control.)\nCreatures you control get +1/+1.\nWhenever you cast a legendary spell, create a 2/2 white Knight creature token with vigilance.\n{3}{W}, {T}: Create a 2/2 white Knight creature token with vigilance.",
+    "power": null,
+    "toughness": null,
+    "rarity": "mythic",
+    "colors": [
+        "W"
+    ],
+    "image_url": "assets\\cards\\Artefatos\\the_circle_of_loyalty.jpg",
+    "quantity": 1
+}

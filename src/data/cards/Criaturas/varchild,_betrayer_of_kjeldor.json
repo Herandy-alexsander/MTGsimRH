@@ -1,0 +1,15 @@
+{
+    "name": "Varchild, Betrayer of Kjeldor",
+    "type_line": "Legendary Creature — Human Knight",
+    "mana_cost": "{2}{R}",
+    "cmc": 3.0,
+    "oracle_text": "Whenever Varchild deals combat damage to a player, that player creates that many 1/1 red Survivor creature tokens.\nSurvivors your opponents control can't block, and they can't attack you or planeswalkers you control.\nWhen Varchild leaves the battlefield, gain control of all Survivors.",
+    "power": "3",
+    "toughness": "3",
+    "rarity": "rare",
+    "colors": [
+        "R"
+    ],
+    "image_url": "assets\\cards\\Criaturas\\varchild,_betrayer_of_kjeldor.jpg",
+    "quantity": 1
+}

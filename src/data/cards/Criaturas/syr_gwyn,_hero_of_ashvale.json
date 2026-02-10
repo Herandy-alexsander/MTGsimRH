@@ -1,0 +1,17 @@
+{
+    "name": "Syr Gwyn, Hero of Ashvale",
+    "type_line": "Legendary Creature — Human Knight",
+    "mana_cost": "{3}{R}{W}{B}",
+    "cmc": 6.0,
+    "oracle_text": "Vigilance, menace\nWhenever an equipped creature you control attacks, you draw a card and you lose 1 life.\nEquipment you control have equip Knight {0}.",
+    "power": "5",
+    "toughness": "5",
+    "rarity": "mythic",
+    "colors": [
+        "B",
+        "R",
+        "W"
+    ],
+    "image_url": "assets\\cards\\Criaturas\\syr_gwyn,_hero_of_ashvale.jpg",
+    "quantity": 1
+}

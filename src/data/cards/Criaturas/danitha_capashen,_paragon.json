@@ -1,0 +1,15 @@
+{
+    "name": "Danitha Capashen, Paragon",
+    "type_line": "Legendary Creature — Human Knight",
+    "mana_cost": "{2}{W}",
+    "cmc": 3.0,
+    "oracle_text": "First strike, vigilance, lifelink\nAura and Equipment spells you cast cost {1} less to cast.",
+    "power": "2",
+    "toughness": "2",
+    "rarity": "uncommon",
+    "colors": [
+        "W"
+    ],
+    "image_url": "assets\\cards\\Criaturas\\danitha_capashen,_paragon.jpg",
+    "quantity": 1
+}

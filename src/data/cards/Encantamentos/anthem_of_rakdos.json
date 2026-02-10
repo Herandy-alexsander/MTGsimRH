@@ -1,0 +1,16 @@
+{
+    "name": "Anthem of Rakdos",
+    "type_line": "Enchantment",
+    "mana_cost": "{2}{B}{R}{R}",
+    "cmc": 5.0,
+    "oracle_text": "Whenever a creature you control attacks, it gets +2/+0 until end of turn and this enchantment deals 1 damage to you.\nHellbent — As long as you have no cards in hand, if a source you control would deal damage to a permanent or player, it deals double that damage to that permanent or player instead.",
+    "power": null,
+    "toughness": null,
+    "rarity": "rare",
+    "colors": [
+        "B",
+        "R"
+    ],
+    "image_url": "assets\\cards\\Encantamentos\\anthem_of_rakdos.jpg",
+    "quantity": 1
+}

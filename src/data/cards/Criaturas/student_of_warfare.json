@@ -1,0 +1,15 @@
+{
+    "name": "Student of Warfare",
+    "type_line": "Creature — Human Knight",
+    "mana_cost": "{W}",
+    "cmc": 1.0,
+    "oracle_text": "Level up {W} ({W}: Put a level counter on this. Level up only as a sorcery.)\nLEVEL 2-6\n3/3\nFirst strike\nLEVEL 7+\n4/4\nDouble strike",
+    "power": "1",
+    "toughness": "1",
+    "rarity": "rare",
+    "colors": [
+        "W"
+    ],
+    "image_url": "assets\\cards\\Criaturas\\student_of_warfare.jpg",
+    "quantity": 1
+}

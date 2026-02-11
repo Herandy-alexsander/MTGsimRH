@@ -1,7 +1,7 @@
 import pygame
-from APP.utils.base import ViewComponent
-from APP.utils.ui_components import MenuButton, UIComponents
-from APP.utils.style import GameStyle
+from APP.core.base import ViewComponent
+from APP.UI.ui_components import MenuButton, UIComponents
+from APP.UI.style import GameStyle
 
 class WelcomeView(ViewComponent):
     def __init__(self, screen, controller, storage):

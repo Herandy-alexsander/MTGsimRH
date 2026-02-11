@@ -1,5 +1,5 @@
 import pygame
-from APP.utils.style import GameStyle
+from APP.UI.style import GameStyle
 
 class MenuButton:
     def __init__(self, rect, text, font):

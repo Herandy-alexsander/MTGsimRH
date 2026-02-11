@@ -1,7 +1,7 @@
 import pygame
 import os
-from APP.utils.base import ViewComponent
-from APP.utils.style import GameStyle
+from APP.core.base import ViewComponent
+from APP.UI.style import GameStyle
 
 class MatchView(ViewComponent):
     def __init__(self, screen, controller, asset_manager): ### NOVO: Recebe asset_manager

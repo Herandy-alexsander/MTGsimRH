@@ -1,6 +1,6 @@
 import pygame
 import threading
-from APP.utils.style import GameStyle
+from APP.UI.style import GameStyle
 
 class RegisterProgressView:
     def __init__(self, screen, storage, deck_name, file_path):

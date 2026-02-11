@@ -1,6 +1,6 @@
 import pygame
-from APP.utils.ui_components import MenuButton, UIComponents
-from APP.utils.style import GameStyle
+from APP.UI.ui_components import MenuButton, UIComponents
+from APP.UI.style import GameStyle
 
 class MainMenu:
     def __init__(self, screen, storage):

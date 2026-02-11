@@ -1,7 +1,7 @@
 import pygame
 import os
-from APP.utils.style import GameStyle
-from APP.utils.ui_components import MenuButton
+from APP.UI.style import GameStyle
+from APP.UI.ui_components import MenuButton
 
 class DeckListView:
     def __init__(self, screen, controller, storage, asset_manager):

@@ -62,7 +62,8 @@ class AppController:
         if not self.profile_ctrl.verificar_primeiro_acesso():
             tela = WelcomeView(self.engine.screen, self, self.profile_ctrl)
         else:
-            tela = MainMenu(self.engine.screen, self.profile_ctrl)
+            # CORREÇÃO: Enviando o deck_ctrl para o MainMenu saber qual deck está ativo
+            tela = MainMenu(self.engine.screen, self.profile_ctrl, self.deck_ctrl)
         self.screen_manager.set_screen(tela)
 
     def run(self):
@@ -78,7 +79,9 @@ class AppController:
             # Limpa cache de partida ao voltar ao menu para liberar RAM
             if self.match_ctrl:
                 self.asset_manager.limpar_cache()
-            self.screen_manager.set_screen(MainMenu(self.engine.screen, self.profile_ctrl))
+            
+            # CORREÇÃO: Enviando o deck_ctrl aqui também na transição de volta
+            self.screen_manager.set_screen(MainMenu(self.engine.screen, self.profile_ctrl, self.deck_ctrl))
         
         # 2. GALERIA DE DECKS (Gerenciador)
         elif action in ["DECK_MANAGER", "REGISTER_SUCCESS"]:
@@ -117,7 +120,9 @@ class AppController:
                 else:
                     print(f"[ERRO] Falha crítica: O arquivo do deck '{deck_info['name']}' não foi achado.")
             else:
-                print("[AVISO] Por favor, selecione um deck antes de jogar!")
+                # CORREÇÃO: Força o bloqueio de segurança voltando pra galeria
+                print("[AVISO] Seleção de deck obrigatória!")
+                self._handle_transitions("DECK_MANAGER")
 
         # 5. FINALIZAR APLICAÇÃO
         elif action in ["QUIT", "SAIR"]:

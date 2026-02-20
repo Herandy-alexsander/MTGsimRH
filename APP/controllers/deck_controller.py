@@ -1,4 +1,5 @@
 import json
+import re  # ADICIONADO: Para limpar o nome do arquivo corretamente
 from pathlib import Path
 import math
 
@@ -16,7 +17,10 @@ class DeckController:
         
         # --- Configuração da Grade e Paginação ---
         self.decks_disponiveis = [] 
-        self.index_deck_atual = 0  # Usado para seleção individual se necessário
+        
+        # PULO DO GATO 1: Começa como 'None' para forçar o jogador a selecionar
+        self.index_deck_atual = None  
+        
         self.pagina_atual = 0
         self.decks_por_pagina = 12  # Layout 2 linhas x 6 colunas
         
@@ -43,9 +47,11 @@ class DeckController:
             nome_comandante = ref_deck.get("commander", "Desconhecido")
             caminho_capa = ""
             
-            # Localiza o arquivo físico para extrair a arte da capa
-            nome_arquivo_deck = nome_deck.replace(" ", "_").lower() + ".json"
-            caminho_arquivo = Path("data/decks") / nome_arquivo_deck
+            # PULO DO GATO 2: Limpeza idêntica à do DeckRepository
+            nome_bruto = nome_deck.strip().lower().replace(" ", "_")
+            nome_limpo = re.sub(r'[^a-z0-9_]', '', nome_bruto)
+            
+            caminho_arquivo = Path("data/decks") / f"{nome_limpo}.json"
             
             if caminho_arquivo.exists():
                 try:
@@ -81,10 +87,7 @@ class DeckController:
         return max(1, math.ceil(len(self.decks_disponiveis) / self.decks_por_pagina))
 
     def mudar_pagina(self, direcao):
-        """
-        Navega entre as páginas.
-        :param direcao: 1 para próxima, -1 para anterior.
-        """
+        """Navega entre as páginas."""
         nova_pag = self.pagina_atual + direcao
         if 0 <= nova_pag < self.total_paginas():
             self.pagina_atual = nova_pag
@@ -93,8 +96,10 @@ class DeckController:
 
     def get_deck_atual(self):
         """Retorna o deck selecionado (usado para destaque ou início de jogo)."""
-        if self.decks_disponiveis and 0 <= self.index_deck_atual < len(self.decks_disponiveis):
-            return self.decks_disponiveis[self.index_deck_atual]
+        # Checa se a lista não está vazia e se existe um índice selecionado (não é None)
+        if self.decks_disponiveis and self.index_deck_atual is not None:
+            if 0 <= self.index_deck_atual < len(self.decks_disponiveis):
+                return self.decks_disponiveis[self.index_deck_atual]
         return None
 
     def selecionar_deck_por_indice_geral(self, indice):

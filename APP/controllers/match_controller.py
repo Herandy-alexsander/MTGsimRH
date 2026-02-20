@@ -14,7 +14,10 @@ class MatchController:
         self.total_players = 2
 
     def setup_game(self, human_deck_data: dict, nickname: str = "Conjurador"):
-        """Inicializa os modelos de jogo e prepara os grimórios."""
+        """
+        Inicializa os modelos de jogo e prepara os grimórios.
+        ATENÇÃO: Agora não compramos as cartas aqui! Só montamos a mesa.
+        """
         print(f"[CONTROLLER] Setup da partida para {nickname}...")
 
         deck_p1 = DeckBuilderService.build_from_json(human_deck_data)
@@ -24,14 +27,42 @@ class MatchController:
         player_2 = PlayerModel(player_id="P2", name="Oponente 1", deck=deck_p2)
         
         self.match_model = MatchModel(player1=player_1, player2=player_2)
+        print(f"[OK] Mesa montada. Aguardando rolagem de iniciativa.")
 
-        # Regras iniciais: Comprar a mão inicial
-        player_1.draw_cards(7)
-        player_2.draw_cards(7)
+    def iniciar_partida(self, primeiro_jogador_id: str):
+        """
+        Chamado PELA MESA após o vencedor do dado ser decidido.
+        É aqui que o jogo realmente começa e as cartas são compradas.
+        """
+        self.match_model.active_player_id = primeiro_jogador_id
         
-        # Simulação para testes de interface
-        self._simular_mesa_bot(player_2)
-        print(f"[OK] Partida pronta!")
+        p1 = self.match_model.players["P1"]
+        p2 = self.match_model.players["P2"]
+        
+        # Embaralha novamente por segurança e Puxa as mãos iniciais
+        p1.deck.embaralhar()
+        p2.deck.embaralhar()
+        
+        p1.draw_cards(7)
+        p2.draw_cards(7)
+        
+        # Simulação para testes de interface (O bot baixa cartas)
+        self._simular_mesa_bot(p2)
+        
+        primeiro_nome = self.match_model.players[primeiro_jogador_id].name
+        print(f"\n[TURNO 1] As cartas foram compradas! {primeiro_nome} começa jogando!")
+
+    # =========================================================
+    # FUNÇÃO CORRIGIDA AQUI: SISTEMA DE MULLIGAN
+    # =========================================================
+    def executar_mulligan(self, player_id: str):
+        """Executa a ação de trocar a mão inicial (Mulligan)."""
+        player = self.match_model.players.get(player_id)
+        if player:
+            # O PlayerModel precisa ter a função return_hand_to_deck()
+            player.return_hand_to_deck()
+            player.draw_cards(7)
+            print(f"[MESA] {player.name} fez Mulligan e comprou 7 novas cartas.")
 
     def sincronizar_view(self, zonas_view):
         """Atualiza a posição visual das cartas nas zonas da MatchView."""
@@ -51,7 +82,11 @@ class MatchController:
         
         if permitido:
             player.play_land(hand_index)
-            player.lands_played_this_turn += 1 
+            # Blindagem para o contador de terrenos descidos
+            if hasattr(player, 'lands_played_this_turn'):
+                player.lands_played_this_turn += 1 
+            else:
+                player.lands_played_this_turn = 1
             print(f"[AÇÃO] {player.name} jogou: {card.name}")
         else:
             print(f"[BLOQUEADO] {motivo}")
@@ -69,7 +104,6 @@ class MatchController:
         else:
             print(f"[BLOQUEADO] {motivo}")
 
-    # --- MÉTODO CORRIGIDO (O QUE ESTAVA FALTANDO) ---
     def cast_other(self, player_id: str, hand_index: int):
         """Gerencia a conjuração de Artefatos, Feitiços e Encantamentos."""
         player = self.match_model.players.get(player_id)

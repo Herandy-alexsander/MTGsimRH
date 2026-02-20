@@ -15,23 +15,37 @@ class PlayerModel:
         # STATUS DO JOGADOR
         self.life: int = starting_life
         self.poison_counters: int = 0
-        self.commander_damage: Dict[str, int] = {} 
+        self.commander_damage: Dict[str, int] = {}
         self.mana_pool: Dict[str, int] = {"W": 0, "U": 0, "B": 0, "R": 0, "G": 0, "C": 0}
         self.is_alive: bool = True
+        
+        # Controle de Regras de Turno
+        self.lands_played_this_turn: int = 0
 
         # ZONAS DE JOGO (Separadas para o LayoutEngine e ZoneUI)
         self.hand: List[CardModel] = []
         self.battlefield_creatures: List[CardModel] = []
         self.battlefield_lands: List[CardModel] = []
-        self.battlefield_other: List[CardModel] = [] 
+        self.battlefield_other: List[CardModel] = []
         
         self.graveyard: List[CardModel] = []
         self.exile: List[CardModel] = []
-        self.commander_zone: List[CardModel] = [] 
+        self.commander_zone: List[CardModel] = []
 
     # =========================================================
     # AÇÕES COM CARTAS (Movimentação entre Zonas)
     # =========================================================
+    
+    def return_hand_to_deck(self):
+        """
+        DEVOLVE A MÃO PARA O GRIMÓRIO E EMBARALHA.
+        Essencial para o sistema de Mulligan.
+        """
+        self.deck.library.extend(self.hand)
+        self.hand.clear()
+        self.deck.embaralhar()
+        print(f"[MODEL] {self.name} devolveu a mão e embaralhou o grimório.")
+
     def draw_cards(self, amount: int = 1):
         """Puxa cartas do DeckModel. Se o deck acabar, o jogador perde."""
         drawn_cards = []
@@ -95,7 +109,7 @@ class PlayerModel:
 
     def take_commander_damage(self, opponent_id: str, amount: int):
         """Aplica dano e checa a regra dos 21 pontos de Comandante."""
-        self.take_damage(amount) 
+        self.take_damage(amount)
         current_dmg = self.commander_damage.get(opponent_id, 0) + amount
         self.commander_damage[opponent_id] = current_dmg
         if current_dmg >= 21:

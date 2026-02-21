@@ -7,13 +7,13 @@ from APP.UI.styles.colors import BG, TEXT_PRIMARY, TEXT_SEC, ACCENT, SUCCESS, DA
 from APP.UI.styles.fonts import get_fonts
 from APP.UI.components.card_ui import CardUI
 from APP.UI.components.zone_ui import ZoneUI
-# Certifique-se de que o LayoutEngine no seu grid.py tenha o método get_grid_layout
 from APP.UI.layout.grid import LayoutEngine
 from APP.UI.components.button import MenuButton
 
 from APP.UI.components.dice_ui import DiceOverlayUI
 from APP.UI.components.mana_bar_ui import ManaBarUI
 from APP.UI.components.phase_bar_ui import PhaseBarUI
+from APP.domain.services.rule_engine import RuleEngine
 
 class MatchView(BaseScreen):
     def __init__(self, screen, controller, asset_manager): 
@@ -30,12 +30,9 @@ class MatchView(BaseScreen):
         self.mao_ui = []
 
         self.dice_ui = DiceOverlayUI(self.largura, self.altura, self.fontes)
-        
-        # INICIALIZA AS BARRAS DE ESTADO E FASE
         self.mana_bar_ui = ManaBarUI(self.fontes)
         self.phase_bar_ui = PhaseBarUI(self.largura, self.altura, self.fontes)
 
-        # --- MÁQUINA DE ESTADOS ---
         self.fase_jogo = "DECIDIR_INICIATIVA" 
         self.res_p1 = 0
         self.res_p2 = 0
@@ -51,20 +48,16 @@ class MatchView(BaseScreen):
             try:
                 img_temp = pygame.image.load(caminho_verso).convert_alpha()
                 self.img_verso_carta = pygame.transform.smoothscale(img_temp, (self.card_w, self.card_h))
-            except Exception:
-                pass
+            except Exception: pass
 
-        # Inicializa as zonas de jogo respeitando as novas barras
         self._inicializar_zonas()
 
-        # Botões Centrais (Telas de transição)
         cx, cy = self.largura // 2, self.altura // 2
         self.btn_rolar_iniciativa = MenuButton(pygame.Rect(cx - 150, cy - 25, 300, 50), "ROLAR INICIATIVA (D20)", self.fontes['menu'])
         self.btn_comecar_partida = MenuButton(pygame.Rect(cx - 150, cy + 100, 300, 50), "COMPRAR CARTAS E INICIAR", self.fontes['menu'])
         self.btn_manter_mao = MenuButton(pygame.Rect(cx - 160, cy + 20, 150, 50), "MANTER", self.fontes['menu'])
         self.btn_trocar_mao = MenuButton(pygame.Rect(cx + 10, cy + 20, 150, 50), "MULLIGAN", self.fontes['menu'])
         
-        # BARRA INFERIOR: BOTÕES DE AÇÃO
         y_barra_inf = self.altura - 55
         self.btn_dado_lateral = MenuButton(pygame.Rect(20, y_barra_inf, 80, 45), "D20", self.fontes['menu'])
         self.btn_passar_fase = MenuButton(pygame.Rect(self.largura - 200, y_barra_inf, 180, 45), "PASSAR FASE", self.fontes['menu'])
@@ -145,27 +138,28 @@ class MatchView(BaseScreen):
         if self.dice_ui.ativo: self.dice_ui.handle_events(events, mouse_pos); return None
 
         self.btn_dado_lateral.update(mouse_pos); self.btn_passar_fase.update(mouse_pos)
-        for c in self.mao_ui: c.update(mouse_pos)
+        for cui in self.mao_ui: cui.update(mouse_pos)
+        
         for e in events:
             if e.type == pygame.QUIT: return "SAIR"
             if e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
                 if self.btn_dado_lateral.is_clicked(e): self.dice_ui.rolar(random.randint(1, 20))
                 if self.btn_passar_fase.is_clicked(e): self.controller.next_phase()
                 for i, cui in enumerate(self.mao_ui):
-                    if cui.is_clicked(e): self._processar_clique_mao(cui.card, i); break
+                    if cui.is_clicked(e) and not getattr(cui, 'is_disabled', False): 
+                        self._processar_clique_mao(cui.card, i); break
         return None
 
     def draw(self):
         self.screen.fill(BG)
-        # 1. Sincroniza dados do modelo com as zonas visuais
+        # 1. SINCRONIZAÇÃO: Garante que os modelos do Controller virem UIs nas zonas
         self.controller.sincronizar_view(self.zonas)
         
-        # 2. Desenha o campo e os jogadores
+        # 2. DESENHO DAS MESAS: Chama o draw de cada ZonaUI (ZoneUI cuida das cartas internamente)
         for p_id in self.match.players.keys(): 
             self._desenhar_mesa_jogador(p_id)
-            self._renderizar_cartas_no_campo(p_id)
 
-        # 3. Desenha barras fixas
+        # 3. BARRAS FIXAS
         jogador_ativo = self.match.get_active_player().name
         self.phase_bar_ui.draw(self.screen, self.match.phase, jogador_ativo)
         pygame.draw.rect(self.screen, (25, 25, 30), (0, self.altura - 60, self.largura, 60))
@@ -181,19 +175,71 @@ class MatchView(BaseScreen):
         elif self.fase_jogo == "MULLIGAN": self._desenhar_painel_mulligan(cx, cy)
         elif self.dice_ui.ativo: self.dice_ui.draw(self.screen)
 
-    def _renderizar_cartas_no_campo(self, p_id):
-        """Renderiza fisicamente as cartas que estão no battlefield do jogador."""
-        for nome_z, zona_ui in self.zonas[p_id].items():
-            if nome_z in ["CAMPO", "MANA", "COMANDANTE"]:
-                for card_model in zona_ui.cards:
-                    mid = id(card_model)
-                    if mid not in self.controller.ui_manager.ui_cards_cache:
-                        self.controller.ui_manager.ui_cards_cache[mid] = CardUI(
-                            card_model, self.asset_manager, zona_ui.rect.x, zona_ui.rect.y, self.card_w, self.card_h
-                        )
-                    cui = self.controller.ui_manager.ui_cards_cache[mid]
-                    # As zonas cuidam do posicionamento via LayoutEngine internamente
-                    cui.draw(self.screen)
+    def _desenhar_mesa_jogador(self, p_id):
+        player = self.match.players[p_id]
+        id_v = 1 if p_id == "P1" else 2
+        area = self._get_area_jogador(id_v, 2)
+        pygame.draw.rect(self.screen, (30, 30, 45) if id_v==1 else (25, 25, 35), area)
+        
+        txt = self.fontes['label'].render(f"{player.name.upper()} | {player.life} PV", True, TEXT_PRIMARY)
+        self.screen.blit(txt, (area.centerx - txt.get_width()//2, area.y + 10))
+        
+        self.mana_bar_ui.draw(self.screen, player, area)
+        
+        # DESENHA AS ZONAS (O PULO DO GATO: ZoneUI.draw já desenha as cartas no lugar certo)
+        for nome, z in self.zonas[p_id].items():
+            if nome != "GRIMORIO": z.draw(self.screen)
+        
+        z_deck = self.zonas[p_id]["GRIMORIO"]
+        self._render_grimorio(z_deck.rect.centerx - self.card_w//2, z_deck.rect.centery - self.card_h//2, len(player.deck.library))
+        
+        if id_v == 1: 
+            self._renderizar_mao(player.hand, area)
+        else:
+            txt_m = self.fontes['label'].render(f"Mão: {len(player.hand)} cartas", True, TEXT_SEC)
+            self.screen.blit(txt_m, (area.centerx - txt_m.get_width()//2, area.bottom - 25))
+
+    def _renderizar_mao(self, h_m, area):
+        mouse_pos = pygame.mouse.get_pos()
+        # ZOOM DE GRUPO: Só ativa se o mouse estiver na área da mão e for fase PRINCIPAL
+        fase_ok = self.match.phase in ["PRINCIPAL 1", "PRINCIPAL 2"]
+        hover_grupo = area.collidepoint(mouse_pos) and fase_ok
+        
+        # PULO DO GATO: LayoutEngine agora retorna X, Y e o ZoomFactor
+        posicoes = LayoutEngine.get_hand_layout(area, len(h_m), self.card_w, self.card_h, hover_grupo)
+        self.mao_ui.clear()
+        
+        for i, layout_data in enumerate(posicoes):
+            x, y, zoom = layout_data
+            model = h_m[i]
+            mid = id(model)
+            w_z, h_z = int(self.card_w * zoom), int(self.card_h * zoom)
+            
+            # Busca ou cria o componente visual
+            if mid not in self.controller.ui_manager.ui_cards_cache:
+                self.controller.ui_manager.ui_cards_cache[mid] = CardUI(model, self.asset_manager, x, y, w_z, h_z)
+            
+            cui = self.controller.ui_manager.ui_cards_cache[mid]
+            cui.rect.width, cui.rect.height = w_z, h_z # Atualiza tamanho para o desenho
+            cui.update_position(x, y)
+            
+            # REGRAS VISUAIS: Escurece a carta se o RuleEngine bloquear a jogada
+            if model.is_land:
+                pode, _ = RuleEngine.validar_descida_terreno(self.match, "P1", model)
+            else:
+                pode, _ = RuleEngine.validar_conjuracao(self.match, "P1", model)
+            
+            cui.is_disabled = not pode
+            self.mao_ui.append(cui)
+            cui.draw(self.screen)
+
+    def _render_grimorio(self, x, y, qtd):
+        for i in range(min(3, qtd)): self._render_verso_simples(pygame.Rect(x + (i*2), y - (i*2), self.card_w, self.card_h))
+
+    def _render_verso_simples(self, rect):
+        if self.img_verso_carta: self.screen.blit(self.img_verso_carta, rect.topleft)
+        else: pygame.draw.rect(self.screen, (43, 37, 33), rect, border_radius=6)
+        pygame.draw.rect(self.screen, ACCENT, rect, 1, border_radius=4)
 
     def _desenhar_animacao_embaralhar(self, cx, cy):
         overlay = pygame.Surface((self.largura, self.altura), pygame.SRCALPHA); overlay.fill((0, 0, 0, 200)); self.screen.blit(overlay, (0, 0))
@@ -207,49 +253,16 @@ class MatchView(BaseScreen):
         txt = self.fontes['titulo'].render(f"EMBARALHANDO{'.' * ((t // 300) % 4)}", True, ACCENT)
         self.screen.blit(txt, (cx - txt.get_width()//2, cy + h + 20))
 
-    def _render_verso_simples(self, rect):
-        if self.img_verso_carta: self.screen.blit(self.img_verso_carta, rect.topleft)
-        else: pygame.draw.rect(self.screen, (43, 37, 33), rect, border_radius=6)
-        pygame.draw.rect(self.screen, ACCENT, rect, 1, border_radius=4)
-
-    def _desenhar_mesa_jogador(self, p_id):
-        player = self.match.players[p_id]
-        id_v = 1 if p_id == "P1" else 2
-        area = self._get_area_jogador(id_v, 2)
-        pygame.draw.rect(self.screen, (30, 30, 45) if id_v==1 else (25, 25, 35), area)
-        txt = self.fontes['label'].render(f"{player.name.upper()} | {player.life} PV", True, TEXT_PRIMARY)
-        self.screen.blit(txt, (area.centerx - txt.get_width()//2, area.y + 10))
-        self.mana_bar_ui.draw(self.screen, player, area)
-        for nome, z in self.zonas[p_id].items():
-            if nome != "GRIMORIO": z.draw(self.screen)
-        z_deck = self.zonas[p_id]["GRIMORIO"]
-        self._render_grimorio(z_deck.rect.centerx - self.card_w//2, z_deck.rect.centery - self.card_h//2, len(player.deck.library))
-        if id_v == 1: self._renderizar_mao(player.hand, area)
-        else:
-            txt_m = self.fontes['label'].render(f"Mão: {len(player.hand)} cartas", True, TEXT_SEC)
-            self.screen.blit(txt_m, (area.centerx - txt_m.get_width()//2, area.bottom - 25))
-
-    def _renderizar_mao(self, h_m, area):
-        pos = LayoutEngine.get_hand_layout(area, len(h_m), self.card_w, self.card_h)
-        self.mao_ui.clear()
-        for i, (x, y) in enumerate(pos):
-            mid = id(h_m[i])
-            if mid not in self.controller.ui_manager.ui_cards_cache:
-                self.controller.ui_manager.ui_cards_cache[mid] = CardUI(h_m[i], self.asset_manager, x, y, self.card_w, self.card_h)
-            cui = self.controller.ui_manager.ui_cards_cache[mid]
-            cui.update_position(x, y); self.mao_ui.append(cui); cui.draw(self.screen)
-
-    def _render_grimorio(self, x, y, qtd):
-        for i in range(min(3, qtd)): self._render_verso_simples(pygame.Rect(x + (i*2), y - (i*2), self.card_w, self.card_h))
-
     def _desenhar_painel_mulligan(self, cx, cy):
         caixa = pygame.Rect(cx - 200, cy - 80, 400, 160)
         pygame.draw.rect(self.screen, (30, 30, 35), caixa, border_radius=10)
         pygame.draw.rect(self.screen, ACCENT, caixa, 2, border_radius=10)
+        txt = self.fontes['label'].render("MÃO INICIAL ESTÁ BOA?", True, TEXT_PRIMARY)
+        self.screen.blit(txt, (cx - txt.get_width()//2, cy - 60))
         self.btn_manter_mao.draw(self.screen); self.btn_trocar_mao.draw(self.screen)
 
     def _processar_clique_mao(self, card, index):
         if card.is_land: self.controller.play_land("P1", index)
         elif card.is_creature: self.controller.cast_creature("P1", index)
         else: self.controller.cast_other("P1", index)
-        self.mao_ui.clear() # Limpa para forçar o redesenho da mão
+        self.mao_ui.clear()

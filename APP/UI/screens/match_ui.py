@@ -161,7 +161,6 @@ class MatchView(BaseScreen):
             self._desenhar_mesa_jogador(p_id)
 
         # 3. BARRAS FIXAS
-        # 🔥 CORREÇÃO DE SEGURANÇA: Se o jogo não começou, não tenta pegar o nome!
         player_ativo = self.match.get_active_player()
         nome_jogador_ativo = player_ativo.name if player_ativo else "PREPARANDO..."
         
@@ -259,7 +258,11 @@ class MatchView(BaseScreen):
         self.btn_manter_mao.draw(self.screen); self.btn_trocar_mao.draw(self.screen)
 
     def _processar_clique_mao(self, card, index):
-        if card.is_land: self.controller.play_land("P1", index)
-        elif card.is_creature: self.controller.cast_creature("P1", index)
-        else: self.controller.cast_other("P1", index)
+        """
+        🔥 ATUALIZAÇÃO DETERMINÍSTICA:
+        A UI não decide mais qual método chamar (play_land, cast_creature, etc).
+        Ela apenas informa ao Controller que o jogador tentou jogar a carta do index X.
+        O Controller decide se é terreno ou mágica e aplica a regra.
+        """
+        self.controller.jogar_carta("P1", index)
         self.mao_ui.clear()

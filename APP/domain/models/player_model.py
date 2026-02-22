@@ -56,6 +56,7 @@ class PlayerModel:
             if card:
                 self.hand.append(card)
                 drawn_cards.append(card)
+                print(f"[DEBUG] {self.name} tentando comprar {amount} carta(s)...")
             else:
                 self.perder_jogo("Tentou comprar de um grimório vazio (Mill).")
                 break

@@ -152,7 +152,7 @@ class DeckRegisterController:
         return False
 
     def _estruturar_dados_offline(self, deck_final):
-        """Faz o download físico das cartas e salva os JSONs locais."""
+        """Faz o download físico das cartas e salva os JSONs locais com dados de regra preservados."""
         cartas_estruturadas = []
         total = len(deck_final['cards'])
         
@@ -162,8 +162,20 @@ class DeckRegisterController:
             
             # Chama o downloader físico (Garante imagens em assets e JSON em data)
             dados_locais = self.image_downloader.garantir_imagem_e_dados(carta_data)
+            
             if dados_locais:
-                cartas_estruturadas.append(dados_locais)
+                # 🔥 ATUALIZAÇÃO: Mescla os dados da Scryfall com as referências locais
+                # Isso garante que o type_line e mana_cost existam dentro do teysa.json
+                item_deck = {
+                    "name": carta_data.get('name'),
+                    "quantity": carta_data.get('quantity', 1),
+                    "type_line": carta_data.get('type_line', ""),
+                    "mana_cost": carta_data.get('mana_cost', ""),
+                    "cmc": carta_data.get('cmc', 0),
+                    "ref_json": dados_locais.get('ref_json'),
+                    "ref_image": dados_locais.get('ref_image')
+                }
+                cartas_estruturadas.append(item_deck)
         
         deck_final['cards'] = cartas_estruturadas
         
@@ -171,5 +183,5 @@ class DeckRegisterController:
         self.deck_repo.salvar_deck_físico(deck_final)
         self.profile_repo.adicionar_referencia_deck(deck_final)
         
-        print(f"[OK] Deck '{deck_final['name']}' salvo com sucesso!")
+        print(f"[OK] Deck '{deck_final['name']}' salvo com sucesso com dados de regras!")
         self.estado = "CONCLUIDO"

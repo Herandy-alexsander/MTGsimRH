@@ -43,6 +43,9 @@ class CardModel(BaseModel):
     is_face_down: bool = False
     counters: Dict[str, int] = Field(default_factory=dict) 
     summoning_sickness: bool = False
+    
+    # PULO DO GATO: A flag que conecta a Regra com o Visual sem misturar código!
+    playable: bool = False 
 
     def model_post_init(self, __context):
         """Garante que criaturas entrem com enjoo de invocação."""

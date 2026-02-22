@@ -1,46 +1,64 @@
 from typing import Dict, List
 from APP.domain.models.player_model import PlayerModel
 from APP.domain.models.card_model import CardModel
+from APP.domain.models.game_state import GameState # 🔥 IMPORTANDO O RELÓGIO DO JOGO
 
 class MatchModel:
     def __init__(self, player1: PlayerModel, player2: PlayerModel):
         """
-        Guarda o estado global da partida e gerencia as regras e a Pilha.
-        Centraliza quem é o jogador ativo e em qual fase o jogo está.
+        Guarda o estado físico da mesa (Jogadores e Pilha).
+        Delega o controle de tempo/fases para o GameState.
         """
-        # Dicionário de Players: Excelente para acesso rápido via ID (P1, P2)
+        # Dicionário de Players para acesso rápido via ID (P1, P2)
         self.players: Dict[str, PlayerModel] = {
             player1.player_id: player1,
             player2.player_id: player2
         }
         
-        self.current_turn: int = 1
-        self.active_player_id: str = player1.player_id
-        
-        # ==========================================
-        # AS 5 FASES OFICIAIS DE UMA RODADA DE MAGIC
-        # ==========================================
-        self.phases = ["INICIAL", "PRINCIPAL 1", "COMBATE", "PRINCIPAL 2", "FINAL"]
-        self.current_phase_index: int = 0
+        # 🔥 O NOVO MOTOR DE REGRAS DE FASES!
+        self.state = GameState()
         
         # A PILHA (Stack): Motor para mágicas e habilidades
         self.stack: List[CardModel] = []
-        
-        self.match_is_over: bool = False
 
+    # =========================================================
+    # ATALHOS PARA O GAME STATE (Para a UI e Controller continuarem funcionando)
+    # =========================================================
     @property
     def phase(self) -> str:
-        """Retorna o nome da fase atual (Ex: 'COMBATE')."""
-        return self.phases[self.current_phase_index]
+        """Retorna o nome da fase atual do GameState."""
+        return self.state.current_phase
 
+    @property
+    def active_player_id(self) -> str:
+        return self.state.active_player_id
+        
+    @active_player_id.setter
+    def active_player_id(self, p_id: str):
+        self.state.active_player_id = p_id
+        self.state.priority_player_id = p_id
+
+    @property
+    def current_phase_index(self) -> int:
+        return self.state.current_phase_index
+        
+    @current_phase_index.setter
+    def current_phase_index(self, index: int):
+        self.state.current_phase_index = index
+
+    # =========================================================
+    # LÓGICA DA MESA FÍSICA
+    # =========================================================
     def get_active_player(self) -> PlayerModel:
-        """Retorna o objeto do jogador que detém o turno."""
-        return self.players[self.active_player_id]
-
+        """Retorna o objeto do jogador que detém o turno, ou None se o jogo não começou."""
+        if not self.state.active_player_id:
+            return None
+        return self.players.get(self.state.active_player_id)
+    
     def get_opponent(self) -> PlayerModel:
         """Retorna o objeto do jogador que está na defensiva."""
         for p_id, p in self.players.items():
-            if p_id != self.active_player_id:
+            if p_id != self.state.active_player_id:
                 return p
         return None
 
@@ -58,37 +76,29 @@ class MatchModel:
         return None
 
     def next_phase(self):
-        """Avança o ponteiro de fases ou passa o turno se chegar ao fim."""
-        if self.match_is_over: 
-            return
+        """Pede para o GameState avançar. Se o turno virar, faz a limpeza da mesa."""
+        # O GameState retorna True APENAS quando vira o turno (sai do Final pro Inicial)
+        turno_mudou = self.state.advance_phase()
         
-        self.current_phase_index += 1
-        
-        # Se ultrapassou a fase 'FINAL', reinicia e vira o turno
-        if self.current_phase_index >= len(self.phases):
+        if turno_mudou:
             self._pass_turn()
 
     def _pass_turn(self):
-        """Lógica interna de transição de turno."""
-        self.current_phase_index = 0
-        self.current_turn += 1
+        """Lógica executada apenas na virada de turno."""
         
-        # Limpa a mana pool E OS CONTADORES DE TURNO ao trocar de turno
+        # 1. Limpa a mana pool dos jogadores e reseta contadores vitais
         for p in self.players.values():
             p.reset_mana_pool()
-            
-            # Zera o limite de terrenos pro novo turno!
-            if hasattr(p, 'lands_played_this_turn'):
-                p.lands_played_this_turn = 0
+            p.lands_played_this_turn = 0 # 🔥 REGRA DO MAGIC: Zera o limite de terrenos!
         
-        # Inverte o ID do jogador ativo
+        # 2. Inverte o jogador ativo
         opponent = self.get_opponent()
         if opponent:
-            self.active_player_id = opponent.player_id
+            self.state.active_player_id = opponent.player_id
+            self.state.priority_player_id = opponent.player_id
         
-        # Limpeza de segurança da pilha
+        # 3. Limpeza de segurança da pilha
         self.stack.clear()
         
         novo_jogador = self.get_active_player()
-        print(f"\n[MESA] --- TURNO {self.current_turn} --- Ativo: {novo_jogador.name}")
-    
+        print(f"\n[MESA] --- TURNO {self.state.turn_number} --- Ativo: {novo_jogador.name}")

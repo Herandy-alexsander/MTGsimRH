@@ -6,7 +6,7 @@ from APP.domain.services.rule_engine import RuleEngine
 class MatchController:
     def __init__(self, ui_manager):
         """
-        Orquestrador da Partida.
+        Orquestrador da Partida (Cérebro).
         Conecta a lógica de regras (RuleEngine) com a interface (UIManager).
         """
         self.match_model = None
@@ -14,9 +14,7 @@ class MatchController:
         self.total_players = 2
 
     def setup_game(self, human_deck_data: dict, nickname: str = "Conjurador"):
-        """
-        Inicializa os modelos de jogo e prepara os grimórios.
-        """
+        """Inicializa os modelos de jogo e prepara os grimórios."""
         print(f"[CONTROLLER] Setup da partida para {nickname}...")
 
         deck_p1 = DeckBuilderService.build_from_json(human_deck_data)
@@ -29,12 +27,7 @@ class MatchController:
         print(f"[OK] Mesa montada. Aguardando rolagem de iniciativa.")
 
     def iniciar_partida(self, primeiro_jogador_id: str):
-        """
-        Chamado após o vencedor do dado ser decidido.
-        Prepara a mão inicial e força o início na fase correta.
-        """
-        self.match_model.active_player_id = primeiro_jogador_id
-        
+        """Prepara a mão inicial e liga o motor do GameState."""
         p1 = self.match_model.players["P1"]
         p2 = self.match_model.players["P2"]
         
@@ -46,58 +39,77 @@ class MatchController:
         
         self._simular_mesa_bot(p2)
         
-        # Sincroniza com as 5 fases em Português conforme o PhaseBarUI
-        try:
-            self.match_model.current_phase_index = self.match_model.phases.index("PRINCIPAL 1")
-        except ValueError:
-            self.match_model.current_phase_index = 0
+        # 🔥 PULO DO GATO: Deixa o GameState assumir o controle total do tempo!
+        # Isso arruma o erro e já seta a fase para "PRINCIPAL 1" no turno 1
+        self.match_model.state.iniciar_jogo(primeiro_jogador_id)
 
         primeiro_nome = self.match_model.players[primeiro_jogador_id].name
         print(f"\n[TURNO 1] {primeiro_nome} começa na fase {self.match_model.phase}!")
+        
+        # O Cérebro analisa as regras logo no primeiro frame
+        self.atualizar_playables()
 
     # =========================================================
-    # SINCRONIZAÇÃO (Ponto vital para o Zoom e Destino das Cartas)
+    # ATUALIZAÇÃO DE ESTADO (O Cérebro pensa aqui)
     # =========================================================
-    def sincronizar_view(self, zonas_view):
+    def atualizar_playables(self):
         """
-        Distribui as cartas do modelo para as zonas visuais (ZoneUI).
-        AJUSTE MACHETE: Separação rigorosa entre MANA e CAMPO central.
+        Avalia as regras e define card.playable para as cartas na mão.
+        Isso retira a responsabilidade da UI de entender as regras de Magic.
         """
-        if not self.match_model or not self.ui_manager: return
+        if not self.match_model: return
 
         for p_id, player in self.match_model.players.items():
-            # 1. ZONA DE MANA: Apenas terrenos (battlefield_lands)
-            # Isso impede que o terreno vá para o centro da tela
+            for card in player.hand:
+                if card.is_land:
+                    pode, _ = RuleEngine.validar_descida_terreno(self.match_model, p_id, card)
+                else:
+                    pode, _ = RuleEngine.validar_conjuracao(self.match_model, p_id, card)
+                
+                # Injeta a decisão final na carta para a UI apenas ler
+                card.playable = pode
+
+    # =========================================================
+    # SINCRONIZAÇÃO DETERMINÍSTICA (Model -> View)
+    # =========================================================
+    def sincronizar_view(self, zonas_view):
+        """Garante que a UI reflita estritamente o Model atual, sem lixo."""
+        if not self.match_model or not self.ui_manager: return
+
+        # 1. Pensa nas regras antes de mandar a UI desenhar
+        self.atualizar_playables()
+
+        # 2. Distribui as cartas exatamente para onde pertencem
+        for p_id, player in self.match_model.players.items():
+            
+            # Limpeza completa (Garante que a UI zere e não crie fantasmas)
+            for zona in zonas_view[p_id].values():
+                zona.clear_cards() 
+
             self.ui_manager.sincronizar_zona_visual(zonas_view[p_id]["MANA"], player.battlefield_lands)
             
-            # 2. ZONA DE CAMPO: Criaturas + Artefatos/Encantamentos
-            # PULO DO GATO: battlefield_other corrigido (sem o 's') para evitar AttributeError
             campo_total = player.battlefield_creatures + player.battlefield_other
             self.ui_manager.sincronizar_zona_visual(zonas_view[p_id]["CAMPO"], campo_total)
             
-            # 3. ZONAS DE APOIO (Cemitério, Exílio e Comando)
             self.ui_manager.sincronizar_zona_visual(zonas_view[p_id]["CEMITERIO"], player.graveyard)
             self.ui_manager.sincronizar_zona_visual(zonas_view[p_id]["EXILIO"], player.exile)
-            
-            # Comandante (Tratado como uma lista de 1 carta para a ZoneUI)
             self.ui_manager.sincronizar_zona_visual(zonas_view[p_id]["COMANDANTE"], player.commander_zone)
 
     # =========================================================
-    # AÇÕES DO JOGADOR (Cliques na Mão)
+    # AÇÕES DO JOGADOR
     # =========================================================
     def play_land(self, player_id: str, hand_index: int):
         player = self.match_model.players.get(player_id)
         if not player or hand_index >= len(player.hand): return
 
         card = player.hand[hand_index]
-        # O RuleEngine valida se já baixou terreno este turno ou se está na fase errada
-        permitido, motivo = RuleEngine.validar_descida_terreno(self.match_model, player_id, card)
-        
-        if permitido:
+        # Agora o Controller só confia na flag playable que ele mesmo calculou
+        if card.playable:
             player.play_land(hand_index)
             player.lands_played_this_turn += 1
             print(f"[AÇÃO] {player.name} desceu terreno: {card.name}")
         else:
+            _, motivo = RuleEngine.validar_descida_terreno(self.match_model, player_id, card)
             print(f"[BLOQUEADO] {motivo}")
 
     def cast_creature(self, player_id: str, hand_index: int):
@@ -105,12 +117,11 @@ class MatchController:
         if not player or hand_index >= len(player.hand): return
 
         card = player.hand[hand_index]
-        permitido, motivo = RuleEngine.validar_conjuracao(self.match_model, player_id, card)
-        
-        if permitido:
+        if card.playable:
             player.cast_creature(hand_index)
             print(f"[AÇÃO] {player.name} conjurou criatura: {card.name}")
         else:
+            _, motivo = RuleEngine.validar_conjuracao(self.match_model, player_id, card)
             print(f"[BLOQUEADO] {motivo}")
 
     def cast_other(self, player_id: str, hand_index: int):
@@ -118,19 +129,17 @@ class MatchController:
         if not player or hand_index >= len(player.hand): return
 
         card = player.hand[hand_index]
-        permitido, motivo = RuleEngine.validar_conjuracao(self.match_model, player_id, card)
-        
-        if permitido:
+        if card.playable:
             player.cast_other(hand_index)
             print(f"[AÇÃO] {player.name} usou: {card.name}")
         else:
+            _, motivo = RuleEngine.validar_conjuracao(self.match_model, player_id, card)
             print(f"[BLOQUEADO] {motivo}")
 
     # =========================================================
-    # CONTROLE DE TURNOS E IA BÁSICA
+    # CONTROLE DE SISTEMA
     # =========================================================
     def next_phase(self):
-        """Avança a fase e notifica o log."""
         self.match_model.next_phase()
         print(f"[TURNO] Avançando para: {self.match_model.phase}")
 
@@ -148,8 +157,6 @@ class MatchController:
             else: player.take_damage(abs(quantidade))
 
     def _simular_mesa_bot(self, bot: PlayerModel):
-        """Prepara o campo do bot para o início do jogo."""
         if len(bot.hand) >= 3:
-            # Bot desce terreno na zona de mana e criatura no campo para teste visual
             bot.battlefield_lands.append(bot.hand.pop())
             bot.battlefield_creatures.append(bot.hand.pop())

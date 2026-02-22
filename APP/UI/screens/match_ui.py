@@ -13,7 +13,8 @@ from APP.UI.components.button import MenuButton
 from APP.UI.components.dice_ui import DiceOverlayUI
 from APP.UI.components.mana_bar_ui import ManaBarUI
 from APP.UI.components.phase_bar_ui import PhaseBarUI
-from APP.domain.services.rule_engine import RuleEngine
+
+# 🚨 PULO DO GATO: A importação do RuleEngine foi DELETADA. A UI não pensa mais, só obedece!
 
 class MatchView(BaseScreen):
     def __init__(self, screen, controller, asset_manager): 
@@ -155,13 +156,17 @@ class MatchView(BaseScreen):
         # 1. SINCRONIZAÇÃO: Garante que os modelos do Controller virem UIs nas zonas
         self.controller.sincronizar_view(self.zonas)
         
-        # 2. DESENHO DAS MESAS: Chama o draw de cada ZonaUI (ZoneUI cuida das cartas internamente)
+        # 2. DESENHO DAS MESAS
         for p_id in self.match.players.keys(): 
             self._desenhar_mesa_jogador(p_id)
 
         # 3. BARRAS FIXAS
-        jogador_ativo = self.match.get_active_player().name
-        self.phase_bar_ui.draw(self.screen, self.match.phase, jogador_ativo)
+        # 🔥 CORREÇÃO DE SEGURANÇA: Se o jogo não começou, não tenta pegar o nome!
+        player_ativo = self.match.get_active_player()
+        nome_jogador_ativo = player_ativo.name if player_ativo else "PREPARANDO..."
+        
+        self.phase_bar_ui.draw(self.screen, self.match.phase, nome_jogador_ativo)
+        
         pygame.draw.rect(self.screen, (25, 25, 30), (0, self.altura - 60, self.largura, 60))
         pygame.draw.rect(self.screen, ACCENT, (0, self.altura - 60, self.largura, 2))
         self.btn_dado_lateral.draw(self.screen); self.btn_passar_fase.draw(self.screen)
@@ -186,7 +191,6 @@ class MatchView(BaseScreen):
         
         self.mana_bar_ui.draw(self.screen, player, area)
         
-        # DESENHA AS ZONAS (O PULO DO GATO: ZoneUI.draw já desenha as cartas no lugar certo)
         for nome, z in self.zonas[p_id].items():
             if nome != "GRIMORIO": z.draw(self.screen)
         
@@ -201,11 +205,9 @@ class MatchView(BaseScreen):
 
     def _renderizar_mao(self, h_m, area):
         mouse_pos = pygame.mouse.get_pos()
-        # ZOOM DE GRUPO: Só ativa se o mouse estiver na área da mão e for fase PRINCIPAL
         fase_ok = self.match.phase in ["PRINCIPAL 1", "PRINCIPAL 2"]
         hover_grupo = area.collidepoint(mouse_pos) and fase_ok
         
-        # PULO DO GATO: LayoutEngine agora retorna X, Y e o ZoomFactor
         posicoes = LayoutEngine.get_hand_layout(area, len(h_m), self.card_w, self.card_h, hover_grupo)
         self.mao_ui.clear()
         
@@ -215,21 +217,16 @@ class MatchView(BaseScreen):
             mid = id(model)
             w_z, h_z = int(self.card_w * zoom), int(self.card_h * zoom)
             
-            # Busca ou cria o componente visual
             if mid not in self.controller.ui_manager.ui_cards_cache:
                 self.controller.ui_manager.ui_cards_cache[mid] = CardUI(model, self.asset_manager, x, y, w_z, h_z)
             
             cui = self.controller.ui_manager.ui_cards_cache[mid]
-            cui.rect.width, cui.rect.height = w_z, h_z # Atualiza tamanho para o desenho
+            cui.rect.width, cui.rect.height = w_z, h_z 
             cui.update_position(x, y)
             
-            # REGRAS VISUAIS: Escurece a carta se o RuleEngine bloquear a jogada
-            if model.is_land:
-                pode, _ = RuleEngine.validar_descida_terreno(self.match, "P1", model)
-            else:
-                pode, _ = RuleEngine.validar_conjuracao(self.match, "P1", model)
+            # 🔥 ARQUITETURA MVC LIMPA: A tela apenas LÊ a propriedade definida pelo Controller!
+            cui.is_disabled = not getattr(model, 'playable', False)
             
-            cui.is_disabled = not pode
             self.mao_ui.append(cui)
             cui.draw(self.screen)
 

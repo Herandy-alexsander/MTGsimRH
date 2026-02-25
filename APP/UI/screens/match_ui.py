@@ -13,8 +13,7 @@ from APP.UI.components.button import MenuButton
 from APP.UI.components.dice_ui import DiceOverlayUI
 from APP.UI.components.mana_bar_ui import ManaBarUI
 from APP.UI.components.phase_bar_ui import PhaseBarUI
-
-# 🚨 PULO DO GATO: A importação do RuleEngine foi DELETADA. A UI não pensa mais, só obedece!
+from APP.UI.components.card_effects import CardEffects  # 🆕 Importado para gerenciar cliques
 
 class MatchView(BaseScreen):
     def __init__(self, screen, controller, asset_manager): 
@@ -101,6 +100,7 @@ class MatchView(BaseScreen):
         mouse_pos = pygame.mouse.get_pos()
         if self.fase_jogo == "ANIMACAO_EMBARALHAR": return None
 
+        # --- Lógica de Iniciativa ---
         if self.fase_jogo == "DECIDIR_INICIATIVA":
             if self.dice_ui.ativo:
                 self.dice_ui.handle_events(events, mouse_pos)
@@ -118,6 +118,7 @@ class MatchView(BaseScreen):
                     self.quem_esta_rolando = "VOCÊ"; self.dice_ui.rolar(self.res_p1)
             return None
 
+        # --- Resultado da Iniciativa ---
         if self.fase_jogo == "RESULTADO_INICIATIVA":
             self.btn_comecar_partida.update(mouse_pos)
             for e in events:
@@ -126,6 +127,7 @@ class MatchView(BaseScreen):
                     self.fase_jogo = "ANIMACAO_EMBARALHAR"; self.tempo_animacao = pygame.time.get_ticks()
             return None
 
+        # --- Mulligan ---
         if self.fase_jogo == "MULLIGAN":
             self.btn_manter_mao.update(mouse_pos); self.btn_trocar_mao.update(mouse_pos)
             for e in events:
@@ -138,6 +140,7 @@ class MatchView(BaseScreen):
 
         if self.dice_ui.ativo: self.dice_ui.handle_events(events, mouse_pos); return None
 
+        # --- Loop Principal de Jogo ---
         self.btn_dado_lateral.update(mouse_pos); self.btn_passar_fase.update(mouse_pos)
         for cui in self.mao_ui: cui.update(mouse_pos)
         
@@ -146,6 +149,15 @@ class MatchView(BaseScreen):
             if e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
                 if self.btn_dado_lateral.is_clicked(e): self.dice_ui.rolar(random.randint(1, 20))
                 if self.btn_passar_fase.is_clicked(e): self.controller.next_phase()
+                
+                # 🆕 GERAÇÃO DE MANA: Verifica clique em terrenos baixados
+                zona_mana = self.zonas["P1"]["MANA"]
+                for card_ui in zona_mana.cards_ui:
+                    if card_ui.rect.collidepoint(mouse_pos):
+                        CardEffects.handle_click(self.controller, "P1", card_ui)
+                        return None # Interrompe para não clicar em nada embaixo
+
+                # CLIQUE NA MÃO: Jogar cartas
                 for i, cui in enumerate(self.mao_ui):
                     if cui.is_clicked(e) and not getattr(cui, 'is_disabled', False): 
                         self._processar_clique_mao(cui.card, i); break
@@ -223,7 +235,7 @@ class MatchView(BaseScreen):
             cui.rect.width, cui.rect.height = w_z, h_z 
             cui.update_position(x, y)
             
-            # 🔥 ARQUITETURA MVC LIMPA: A tela apenas LÊ a propriedade definida pelo Controller!
+            # 🔥 A tela apenas LÊ a propriedade definida pelo Controller!
             cui.is_disabled = not getattr(model, 'playable', False)
             
             self.mao_ui.append(cui)
@@ -258,11 +270,6 @@ class MatchView(BaseScreen):
         self.btn_manter_mao.draw(self.screen); self.btn_trocar_mao.draw(self.screen)
 
     def _processar_clique_mao(self, card, index):
-        """
-        🔥 ATUALIZAÇÃO DETERMINÍSTICA:
-        A UI não decide mais qual método chamar (play_land, cast_creature, etc).
-        Ela apenas informa ao Controller que o jogador tentou jogar a carta do index X.
-        O Controller decide se é terreno ou mágica e aplica a regra.
-        """
+        """Informa ao Controller que o jogador tentou jogar a carta do index X."""
         self.controller.jogar_carta("P1", index)
         self.mao_ui.clear()

@@ -40,32 +40,43 @@ class ManaBarUI:
             except Exception as e:
                 print(f"[AVISO] Não foi possível fatiar manas.png: {e}")
 
-        # FALLBACK (Bolinhas coloridas de segurança)
-        cores = {'W': (250, 250, 240), 'U': (80, 150, 220), 'B': (60, 60, 60), 'R': (220, 60, 40), 'G': (60, 160, 80), 'C': (180, 180, 180)}
+        # FALLBACK (Bolinhas coloridas de segurança caso a imagem falhe)
+        cores = {'W': (250, 250, 240), 'U': (80, 150, 220), 'B': (40, 40, 40), 
+                 'R': (220, 60, 40), 'G': (60, 160, 80), 'C': (140, 140, 140)}
         for tipo, cor in cores.items():
             surf = pygame.Surface((24, 24), pygame.SRCALPHA)
             pygame.draw.circle(surf, cor, (12, 12), 12)
-            pygame.draw.circle(surf, (0, 0, 0), (12, 12), 12, 1)
-            letra = self.fontes['status'].render(tipo, True, (0,0,0) if tipo in ['W','C'] else (255,255,255))
+            pygame.draw.circle(surf, (20, 20, 20), (12, 12), 12, 1) # Borda
+            
+            # Tenta usar a fonte 'status' ou 'label' como reserva
+            fonte_letra = self.fontes.get('status', self.fontes.get('label'))
+            letra = fonte_letra.render(tipo, True, (0,0,0) if tipo in ['W','C'] else (255,255,255))
             surf.blit(letra, (12 - letra.get_width()//2, 12 - letra.get_height()//2))
             icones[tipo] = surf
         return icones
 
     def draw(self, screen, player, area):
         """Desenha a barra centralizada abaixo do nome do jogador."""
-        y = area.y + 30 
+        # Se o player não tiver mana_pool inicializada, evita erro
+        pool = getattr(player, 'mana_pool', {})
+        
+        y = area.y + 40 # Ajustado para não sobrepor o nome do jogador
         tipos_mana = ['W', 'U', 'B', 'R', 'G', 'C']
-        espacamento = 60
+        espacamento = 55
         largura_total = len(tipos_mana) * espacamento
-        start_x = area.centerx - (largura_total // 2) + 15
+        start_x = area.centerx - (largura_total // 2)
         
         for i, m_type in enumerate(tipos_mana):
-            qtd = player.mana_pool.get(m_type, 0)
+            qtd = pool.get(m_type, 0)
             x = start_x + (i * espacamento)
             
-            icone = self.icones_mana[m_type]
-            screen.blit(icone, (x, y))
+            # Desenha o ícone
+            icone = self.icones_mana.get(m_type)
+            if icone:
+                screen.blit(icone, (x, y))
             
+            # Desenha a quantidade ao lado do ícone
             cor_qtd = SUCCESS if qtd > 0 else TEXT_SEC
             txt_qtd = self.fontes['label'].render(str(qtd), True, cor_qtd)
-            screen.blit(txt_qtd, (x + 30, y + 2))
+            # Alinhamento vertical centralizado com o ícone de 24px
+            screen.blit(txt_qtd, (x + 28, y + (12 - txt_qtd.get_height() // 2)))

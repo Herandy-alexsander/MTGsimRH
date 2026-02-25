@@ -5,8 +5,7 @@ from datetime import datetime
 class DeckRegisterController:
     def __init__(self, scryfall_service, deck_repo, profile_repo, image_downloader):
         """
-        Motor de registro de decks. Orquestra a análise de TXT, consulta à Scryfall 
-        e o download físico de assets em background.
+        Motor de registro de decks atualizado para capturar dados de geração de mana.
         """
         self.scryfall = scryfall_service
         self.deck_repo = deck_repo
@@ -24,7 +23,6 @@ class DeckRegisterController:
         self.index_lenda = 0
 
     def limpar_dados(self):
-        """Zera o estado para um novo cadastro, liberando memória RAM."""
         self.estado = "INICIAL"
         self.progresso = 0
         self.carta_atual_nome = ""
@@ -35,7 +33,6 @@ class DeckRegisterController:
         self.index_lenda = 0
 
     def iniciar_analise(self, nome_deck, linhas_txt):
-        """Dispara a thread de consulta à API."""
         self.limpar_dados()
         self.nome_deck_temp = nome_deck if nome_deck else "Novo Deck"
         self.estado = "ANALISANDO"
@@ -45,7 +42,6 @@ class DeckRegisterController:
         thread.start()
 
     def _processar_lista_batch(self, linhas):
-        """Consulta ultra-rápida via API Scryfall (Batch mode)."""
         time.sleep(0.5) 
         try:
             linhas_validas = [l.strip() for l in linhas if l.strip()]
@@ -56,25 +52,14 @@ class DeckRegisterController:
 
             nomes_lista = []
             mapa_quantidades = {}
-            total_cartas_txt = 0
 
-            # 1. Parsing do TXT (Formato: 'Quantidade Nome')
             for linha in linhas_validas:
                 partes = linha.split(' ', 1)
                 qtd = int(partes[0]) if partes[0].isdigit() else 1
                 nome = partes[1] if partes[0].isdigit() else linha
                 nomes_lista.append(nome)
                 mapa_quantidades[nome] = qtd
-                total_cartas_txt += qtd
 
-            # 2. Validação básica de Commander
-            if total_cartas_txt != 100:
-                print(f"[AVISO] Deck com {total_cartas_txt} cartas detectado.")
-
-            self.progresso = 10
-            self.carta_atual_nome = "Consultando Scryfall..."
-
-            # 3. Consulta em lotes (limite de 75 cartas por requisição da Scryfall)
             cartas_retornadas = []
             for i in range(0, len(nomes_lista), 75):
                 lote = nomes_lista[i:i+75]
@@ -83,7 +68,6 @@ class DeckRegisterController:
                     cartas_retornadas.extend(resultados)
                 self.progresso = 15 + int((i / len(nomes_lista)) * 60)
 
-            # 4. Processamento dos resultados e detecção de Lendas
             for dados in cartas_retornadas:
                 if not dados or not isinstance(dados, dict): continue
                 
@@ -100,7 +84,7 @@ class DeckRegisterController:
                     })
 
             if not self.lendas_encontradas:
-                self.mensagem_erro = "Nenhuma Criatura Lendária encontrada no deck."
+                self.mensagem_erro = "Nenhuma Criatura Lendária encontrada."
                 self.estado = "INICIAL"
             else:
                 self.progresso = 100
@@ -108,7 +92,7 @@ class DeckRegisterController:
             
         except Exception as e:
             print(f"[ERRO BATCH] {e}")
-            self.mensagem_erro = "Falha crítica na conexão com a API."
+            self.mensagem_erro = "Falha na conexão com a API."
             self.estado = "INICIAL"
 
     def obter_comandante_atual(self):
@@ -121,7 +105,6 @@ class DeckRegisterController:
             self.index_lenda = (self.index_lenda + direcao) % len(self.lendas_encontradas)
 
     def finalizar_registro(self):
-        """Inicia a fase de estruturação offline (Download de imagens)."""
         comandante = self.obter_comandante_atual()
         if not comandante: return False
         
@@ -152,7 +135,10 @@ class DeckRegisterController:
         return False
 
     def _estruturar_dados_offline(self, deck_final):
-        """Faz o download físico das cartas e salva os JSONs locais com dados de regra preservados."""
+        """
+        ATUALIZADO: Agora extrai o 'produced_mana' da Scryfall e salva no JSON local.
+        Isso permite que o simulador saiba que mana o terreno gera sem consultar a web.
+        """
         cartas_estruturadas = []
         total = len(deck_final['cards'])
         
@@ -160,28 +146,28 @@ class DeckRegisterController:
             self.carta_atual_nome = carta_data.get('name', 'Desconhecido')
             self.progresso = int(((index + 1) / total) * 100)
             
-            # Chama o downloader físico (Garante imagens em assets e JSON em data)
             dados_locais = self.image_downloader.garantir_imagem_e_dados(carta_data)
             
             if dados_locais:
-                # 🔥 ATUALIZAÇÃO: Mescla os dados da Scryfall com as referências locais
-                # Isso garante que o type_line e mana_cost existam dentro do teysa.json
+                # 🔥 AQUI ESTÁ A MUDANÇA: Extraímos o 'produced_mana' direto dos dados da Scryfall
+                # que foram coletados no método _processar_lista_batch.
                 item_deck = {
                     "name": carta_data.get('name'),
                     "quantity": carta_data.get('quantity', 1),
                     "type_line": carta_data.get('type_line', ""),
                     "mana_cost": carta_data.get('mana_cost', ""),
                     "cmc": carta_data.get('cmc', 0),
+                    # Captura a lista de cores que o terreno produz (ex: ["W", "U"])
+                    "produced_mana": carta_data.get('produced_mana', []), 
+                    "color_identity": carta_data.get('color_identity', []),
                     "ref_json": dados_locais.get('ref_json'),
                     "ref_image": dados_locais.get('ref_image')
                 }
                 cartas_estruturadas.append(item_deck)
         
         deck_final['cards'] = cartas_estruturadas
-        
-        # Persistência final no disco
         self.deck_repo.salvar_deck_físico(deck_final)
         self.profile_repo.adicionar_referencia_deck(deck_final)
         
-        print(f"[OK] Deck '{deck_final['name']}' salvo com sucesso com dados de regras!")
+        print(f"[OK] Deck '{deck_final['name']}' registrado com suporte a Mana!")
         self.estado = "CONCLUIDO"

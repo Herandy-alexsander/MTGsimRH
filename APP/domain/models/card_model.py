@@ -24,6 +24,7 @@ class CardModel(BaseModel):
     
     colors: List[str] = Field(default_factory=list)
     color_identity: List[str] = Field(default_factory=list)
+    produced_mana: List[str] = Field(default_factory=list)
     
     power: Optional[str] = None
     toughness: Optional[str] = None

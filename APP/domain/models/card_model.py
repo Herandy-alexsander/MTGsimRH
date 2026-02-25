@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional, Dict
 import os
+import re
 
 class CardModel(BaseModel):
     """
@@ -77,7 +78,32 @@ class CardModel(BaseModel):
         self.counters.clear()
 
     # =========================================================
-    # 4. HELPERS DE TIPO (Blindados: Inglês e Português)
+    # 4. HELPERS DE MANA (NOVIDADE VERSÃO A4)
+    # =========================================================
+    @property
+    def mana_cost_map(self) -> Dict[str, int]:
+        """
+        Transforma '{1}{W}{B}' em {'Generic': 1, 'W': 1, 'B': 1}.
+        Essencial para a validação de custos da Versão A4.
+        """
+        cost_dict = {}
+        if not self.mana_cost:
+            return cost_dict
+
+        # Encontra tudo que está entre chaves { }
+        symbols = re.findall(r'\{(.*?)\}', self.mana_cost)
+        
+        for s in symbols:
+            if s.isdigit():
+                cost_dict["Generic"] = cost_dict.get("Generic", 0) + int(s)
+            else:
+                # Trata símbolos como W, U, B, R, G, C
+                cost_dict[s] = cost_dict.get(s, 0) + 1
+        
+        return cost_dict
+
+    # =========================================================
+    # 5. HELPERS DE TIPO (Blindados: Inglês e Português)
     # =========================================================
     @property
     def is_land(self) -> bool:
@@ -122,7 +148,7 @@ class CardModel(BaseModel):
         return "planeswalker" in tl or "planeswalker" in cat
 
     # =========================================================
-    # 5. ASSET HELPERS
+    # 6. ASSET HELPERS
     # =========================================================
     def get_image_filename(self) -> str:
         """Extrai o nome do arquivo sem extensão."""
